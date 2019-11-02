@@ -1,4 +1,4 @@
-package ejemploG2;
+package proyecto2;
 
 import graphs.GVertex;
 import graphs.Graph;
@@ -55,7 +55,7 @@ public class Ejemplo {
         System.out.println();
 
         SwingUtilities.invokeLater(() -> {
-            new VentanaEjemplo("Ejemplo G2B", g2b).init();
+            new VentanaEjemplo("Proyecto 2", g2b).init();
         });
 
 //        Graph<Integer, Double> g2b = new Graph<>();

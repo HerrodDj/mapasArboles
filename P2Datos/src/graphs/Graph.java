@@ -73,6 +73,9 @@ public class Graph<V, E> {
             throw new NullPointerException("No existe el vértice.");
         }
         edges.addLast(new Edge<>(tail, head, w));
+        tail.agregarArco(new Edge(tail, head, w));
+        List<Edge> g = tail.getEdges();
+        int p = g.count();
     }
 
     public void add(V t, V h, E w) {
@@ -105,7 +108,9 @@ public class Graph<V, E> {
 
                     // Se define el criterio para seleccionar
                     // el siguiente vértice.
+                   
                     GVertex<V> v1 = vs.get(r.nextInt(vs.count()));
+                    
                     p1 = v1.getPosition();
 
                     System.out.printf("v(%s): %s%n", v0.getInfo(), p0);

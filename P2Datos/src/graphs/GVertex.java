@@ -1,12 +1,15 @@
 package graphs;
 
 import java.awt.geom.Point2D;
+import lists.List;
+import lists.SimpleLinkedList;
 
 public class GVertex<V> {
 
-    public GVertex(V info, Point2D.Float position) {
+    public GVertex(V info, Point2D.Float position){
         this.info = info;
         this.position = position;
+        ed = new SimpleLinkedList<>();
     }
 
     public GVertex(V info) {
@@ -25,6 +28,18 @@ public class GVertex<V> {
         this.position = position;
     }
 
+    public List<Edge> getEdges() {
+        return ed;
+    }
+
+    public void setEdges(List<Edge> edges) {
+        this.ed = edges;
+    }
+
+    public void agregarArco(Edge g){
+        this.getEdges().addLast(g);
+    }
+    
     @Override
     public String toString() {
         return String.format("{%s, (%4.2f, %4.2f)}",
@@ -33,4 +48,6 @@ public class GVertex<V> {
 
     private final V info;
     private Point2D.Float position;
+    private List<Edge> ed;
+    
 }

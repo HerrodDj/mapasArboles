@@ -5,27 +5,33 @@ package lists;
  * ©, 2019, Georges Alfaro S.
  *
  * @author Georges Alfaro S.
- * @version 1.0.1
- * @since 2019-08-12
+ * @version 1.0.3
+ * @since 2019-10-18
  */
 public interface List<T> {
 
-    public void clear();
+    boolean isEmpty();
 
-    public T getFirst();
+    int count();
 
-    public T getLast();
+    void clear();
 
-    public void addFirst(T x);
+    T getFirst();
 
-    public void addLast(T x);
+    T getLast();
 
-    public T removeFirst();
+    void addFirst(T x);
 
-    public T removeLast();
+    void addLast(T x);
 
-    public T get(int position);
+    void append(List<T> c);
 
-    public Iterator<T> getIterator();
+    T removeFirst();
+
+    T removeLast();
+
+    T get(int position);
+
+    Iterator<T> getIterator();
 
 }

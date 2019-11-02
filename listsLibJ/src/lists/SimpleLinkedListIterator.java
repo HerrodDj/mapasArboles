@@ -6,7 +6,7 @@ package lists;
  *
  * @author Georges Alfaro S.
  * @version 1.0.1
- * @since 2019-09-3'
+ * @since 2019-09-30
  */
 class SimpleLinkedListIterator<T> implements Iterator {
 

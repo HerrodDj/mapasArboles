@@ -61,23 +61,12 @@ public abstract class AbstractList<T> implements Stack<T>, Queue<T>, List<T> {
         addLast(x);
     }
 
-    public static <T> AbstractList<T> create(LIST_TYPE type) {
-        switch (type) {
-            case ARRAY:
-                return new SimpleArray<>();
-            case LINKED_LIST:
-                return new SimpleLinkedList<>();
-            case DOUBLE_LINKED_LIST:
-                return new DoubleLinkedList<>();
-            default:
-                throw new IllegalArgumentException();
+    @Override
+    public void append(List<T> c) {
+        Iterator<T> i = c.getIterator();
+        while (i.hasNext()) {
+            addLast(i.getNext());
         }
-    }
-
-    public enum LIST_TYPE {
-        ARRAY,
-        LINKED_LIST,
-        DOUBLE_LINKED_LIST
     }
 
     protected int count;

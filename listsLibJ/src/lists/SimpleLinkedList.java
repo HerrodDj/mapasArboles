@@ -91,7 +91,7 @@ public class SimpleLinkedList<T> extends AbstractList<T> {
             return cursor.getInfo();
         }
         throw new IndexOutOfBoundsException();
-    }
+    }    
 
     @Override
     public String toString() {

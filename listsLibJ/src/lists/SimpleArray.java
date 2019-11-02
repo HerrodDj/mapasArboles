@@ -5,8 +5,8 @@ package lists;
  * ©, 2019, Georges Alfaro S.
  *
  * @author Georges Alfaro S.
- * @version 1.0.1
- * @since 2019-08-12
+ * @version 1.1.0
+ * @since 2019-10-12
  */
 public class SimpleArray<T> extends AbstractList<T> {
 
@@ -34,12 +34,20 @@ public class SimpleArray<T> extends AbstractList<T> {
 
     @Override
     public T getFirst() {
-        throw new UnsupportedOperationException();
+        if (!isEmpty()) {
+            return (T) v[k0];
+        } else {
+            throw new IndexOutOfBoundsException();
+        }
     }
 
     @Override
     public T getLast() {
-        throw new UnsupportedOperationException();
+        if (!isEmpty()) {
+            return (T) v[(k1 + v.length - 1) % v.length];
+        } else {
+            throw new IndexOutOfBoundsException();
+        }
     }
 
     @Override

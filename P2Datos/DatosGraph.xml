@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<Graph>
+<GVertex numero="1" x="400" y="100"/>
+<GVertex numero="2" x="250" y="250"/>
+<GVertex numero="3" x="550" y="250"/>
+<GVertex numero="4" x="250" y="400"/>
+<GVertex numero="5" x="350" y="350"/>
+<GVertex numero="6" x="600" y="450"/>
+
+<Edge head="1" tail="3" info="5.0"/>
+<Edge head="1" tail="2"/>
+<Edge head="2" tail="5"/>
+<Edge head="5" tail="3"/>
+<Edge head="2" tail="4"/>
+<Edge head="4" tail="5"/>
+<Edge head="5" tail="6"/>
+<Edge head="6" tail="3"/>
+</Graph>

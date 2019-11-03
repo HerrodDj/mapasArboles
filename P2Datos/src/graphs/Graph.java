@@ -278,7 +278,29 @@ public class Graph<V, E> {
     public void setActive(boolean active) {
         this.active = active;
     }
-
+    
+    
+    //------------------------------------
+    
+    public List<GVertex> dijkstra ( V inicio, V fin){
+        SimpleLinkedList<GVertex > list = new SimpleLinkedList<GVertex>();
+       
+        GVertex ini = getVertex(inicio);
+        GVertex fi= getVertex(fin);
+        
+        Iterator<GVertex<V>> i = vertices.getIterator();
+        Iterator<Edge<V, E>> j = edges.getIterator();
+        list.addFirst(ini);
+        
+        while(i.hasNext() || j.hasNext()){
+                   
+        
+        
+        }
+        return list;
+    }
+    
+    
     private static final float[] DASHES = {16f, 20f};
     private static final Stroke TRAZO_BASE
             = new BasicStroke(36f,

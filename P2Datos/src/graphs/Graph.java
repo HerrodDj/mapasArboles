@@ -85,7 +85,7 @@ public class Graph<V, E> {
     public void addArc(V t, V h) {
         add(t, h, null);
     }
-    
+
     public void addArc(V t, V h, E x) {
         add(t, h, x);
     }
@@ -108,13 +108,22 @@ public class Graph<V, E> {
 
                     // Se define el criterio para seleccionar
                     // el siguiente vértice.
-                   
-                    GVertex<V> v1 = vs.get(r.nextInt(vs.count()));
                     
-                    p1 = v1.getPosition();
+                    Iterator<Edge<V, E>> i = edges.getIterator();
+                    while (i.hasNext()) {
+                        
+                        while (i.getNext().getTail().getInfo().equals(v0.getInfo())) {
+                            if (i.getNext().getInfo().equals(4.0)) {
+                                GVertex<V> aux = i.getNext().getHead();
+                                GVertex<V> v1= vs.get(aux);
+                                p1 = v1.getPosition();
+                            }
+                        }
+                    }
+                    
 
                     System.out.printf("v(%s): %s%n", v0.getInfo(), p0);
-                    System.out.printf("v(%s): %s%n", v1.getInfo(), p1);
+//                    System.out.printf("v(%s): %s%n", v1.getInfo(), p1);
 
                     t = 0.0;
                     while (t <= 1.0) {
@@ -124,7 +133,7 @@ public class Graph<V, E> {
                         } catch (InterruptedException ex) {
                         }
                     }
-                    v0 = v1;
+//                    v0 = v1;
                 }
             }
 
@@ -201,7 +210,7 @@ public class Graph<V, E> {
             );
 
             g.setStroke(new BasicStroke(2f, BasicStroke.CAP_SQUARE,
-                BasicStroke.CAP_SQUARE, 0f, DASHES, 0f));
+                    BasicStroke.CAP_SQUARE, 0f, DASHES, 0f));
             g.setColor(Color.WHITE);
 
             g.drawLine(
@@ -217,7 +226,6 @@ public class Graph<V, E> {
         while (j.hasNext()) {
             GVertex<V> v = j.getNext();
 
-            
             g.setColor(Color.WHITE);
             g.fillOval((int) v.getPosition().x - S0 / 2,
                     (int) v.getPosition().y - S0 / 2,
@@ -297,7 +305,7 @@ public class Graph<V, E> {
     private final List<GVertex<V>> vertices;
     private final List<Edge<V, E>> edges;
 
-    private static final int MAX_WAIT = 25;
+    private static final int MAX_WAIT = 100;
     private boolean active = false;
     private Point2D.Float p0;
     private Point2D.Float p1;

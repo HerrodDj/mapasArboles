@@ -1,6 +1,5 @@
 package ejemploG2;
 
-import graphs.GVertex;
 import graphs.Graph;
 import java.awt.geom.Point2D;
 import java.util.Random;
@@ -8,7 +7,6 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import lists.Iterator;
 
 public class Ejemplo {
 
@@ -41,13 +39,13 @@ public class Ejemplo {
         g2b.add(6, new Point2D.Float(600, 450));
 
         g2b.addArc(1, 3, 5.0);
-        g2b.addArc(1, 2);
-        g2b.addArc(2, 5);
-        g2b.addArc(5, 3);
-        g2b.addArc(2, 4);
-        g2b.addArc(4, 5);
-        g2b.addArc(5, 6);
-        g2b.addArc(6, 3);
+        g2b.addArc(1, 2, 4.0);
+        g2b.addArc(5, 2, 5.0);
+        g2b.addArc(3, 5, 5.0);
+        g2b.addArc(2, 4, 4.0);
+        g2b.addArc(4, 5, 4.0);
+        g2b.addArc(5, 6, 4.0);
+        g2b.addArc(6, 3, 4.0);
 
         System.out.printf("%s%n%n", g2b);
         System.out.println();

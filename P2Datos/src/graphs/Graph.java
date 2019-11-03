@@ -73,6 +73,9 @@ public class Graph<V, E> {
             throw new NullPointerException("No existe el vértice.");
         }
         edges.addLast(new Edge<>(tail, head, w));
+        tail.agregarArco(new Edge(tail, head, w));
+        List<Edge> g = tail.getEdges();
+        int p = g.count();
     }
 
     public void add(V t, V h, E w) {
@@ -105,7 +108,9 @@ public class Graph<V, E> {
 
                     // Se define el criterio para seleccionar
                     // el siguiente vértice.
+                   
                     GVertex<V> v1 = vs.get(r.nextInt(vs.count()));
+                    
                     p1 = v1.getPosition();
 
                     System.out.printf("v(%s): %s%n", v0.getInfo(), p0);
@@ -265,7 +270,29 @@ public class Graph<V, E> {
     public void setActive(boolean active) {
         this.active = active;
     }
-
+    
+    
+    //------------------------------------
+    
+    public List<GVertex> dijkstra ( V inicio, V fin){
+        SimpleLinkedList<GVertex > list = new SimpleLinkedList<GVertex>();
+       
+        GVertex ini = getVertex(inicio);
+        GVertex fi= getVertex(fin);
+        
+        Iterator<GVertex<V>> i = vertices.getIterator();
+        Iterator<Edge<V, E>> j = edges.getIterator();
+        list.addFirst(ini);
+        
+        while(i.hasNext() || j.hasNext()){
+                   
+        
+        
+        }
+        return list;
+    }
+    
+    
     private static final float[] DASHES = {16f, 20f};
     private static final Stroke TRAZO_BASE
             = new BasicStroke(36f,

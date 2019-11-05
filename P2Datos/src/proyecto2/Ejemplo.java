@@ -1,8 +1,11 @@
 package proyecto2;
 
+import data.XMLReader;
 import graphs.Graph;
 import java.awt.geom.Point2D;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -24,69 +27,29 @@ public class Ejemplo {
     }
 
     public void init() {
-        Graph<Integer, Double> g2b = new Graph<>();
+        try {
+            Graph<Integer, Double> g2b = new Graph<>();
+            
+            int mx = 64;
+            int my = 64;
+            int sx = 72;
+            int sy = 96;
+            
+            XMLReader reader = new XMLReader();
+            reader.read(PATH, g2b);
+                        
+            System.out.printf("%s%n%n", g2b);
+            System.out.println();
+            System.out.println(g2b.getAdjacencyInfo());
+            System.out.println();
+            
+            SwingUtilities.invokeLater(() -> {
+                new VentanaEjemplo("Proyecto 2", g2b).init();
+            });
 
-        int mx = 64;
-        int my = 64;
-        int sx = 72;
-        int sy = 96;
-
-        g2b.add(1, new Point2D.Float(400, 100));
-        g2b.add(2, new Point2D.Float(250, 250));
-        g2b.add(3, new Point2D.Float(550, 250));
-        g2b.add(4, new Point2D.Float(250, 400));
-        g2b.add(5, new Point2D.Float(350, 350));
-        g2b.add(6, new Point2D.Float(600, 450));
-
-        g2b.addArc(1, 3, 5.0);
-        g2b.addArc(1, 2, 4.0);
-        g2b.addArc(5, 2, 5.0);
-        g2b.addArc(3, 5, 5.0);
-        g2b.addArc(2, 4, 4.0);
-        g2b.addArc(4, 5, 4.0);
-        g2b.addArc(5, 6, 4.0);
-        g2b.addArc(6, 3, 4.0);
-
-        System.out.printf("%s%n%n", g2b);
-        System.out.println();
-        System.out.println(g2b.getAdjacencyInfo());
-        System.out.println();
-
-        SwingUtilities.invokeLater(() -> {
-            new VentanaEjemplo("Proyecto 2", g2b).init();
-        });
-
-//        Graph<Integer, Double> g2b = new Graph<>();
-//
-//        int mx = 64;
-//        int my = 64;
-//        int sx = 72;
-//        int sy = 96;
-//
-//        g2b.add(1, new Point2D.Float(getRandom(2, 800), getRandom(2, 800)));
-//        g2b.add(2, new Point2D.Float(getRandom(2, 800), getRandom(2, 800)));
-//        g2b.add(3, new Point2D.Float(getRandom(2, 800), getRandom(2, 800)));
-//        g2b.add(4, new Point2D.Float(getRandom(2, 800), getRandom(2, 800)));
-//        g2b.add(5, new Point2D.Float(getRandom(2, 800), getRandom(2, 800)));
-//        g2b.add(6, new Point2D.Float(getRandom(2, 800), getRandom(2, 800)));
-//
-//        g2b.add(1, 3);
-//        g2b.add(1, 2);
-//        g2b.add(2, 5);
-//        g2b.add(5, 3);
-//        g2b.add(2, 4);
-//        g2b.add(4, 5);
-//        g2b.add(5, 6);
-//        g2b.add(6, 3);
-//
-//        System.out.printf("%s%n%n", g2b);
-//        System.out.println();
-//        System.out.println(g2b.getAdjacencyInfo());
-//        System.out.println();
-//
-//        SwingUtilities.invokeLater(() -> {
-//            new VentanaEjemplo("Ejemplo G2B", g2b).init();
-//        });
+        } catch (Exception ex) {
+            Logger.getLogger(Ejemplo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public static int getRandom(int from, int to) {
@@ -96,4 +59,5 @@ public class Ejemplo {
         return from - new Random().nextInt(Math.abs(to - from));
     }
 
+    private final String PATH = "DatosGraph.xml";
 }

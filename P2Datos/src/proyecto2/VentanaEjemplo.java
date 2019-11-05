@@ -1,4 +1,4 @@
-package ejemploG2;
+package proyecto2;
 
 import graphs.Graph;
 import graphs.view.GraphPanel;

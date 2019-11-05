@@ -138,6 +138,13 @@ public class DoubleLinkedList<T> extends AbstractList<T> {
     }
 
     DLink<T> first, last;
+
+    @Override
+    public T get(T info) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+   
 }
 
 class DLink<T> {

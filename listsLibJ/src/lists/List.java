@@ -31,6 +31,9 @@ public interface List<T> {
     T removeLast();
 
     T get(int position);
+    
+    T get(T info);
+   
 
     Iterator<T> getIterator();
 

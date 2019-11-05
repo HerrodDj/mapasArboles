@@ -8,7 +8,7 @@ package lists;
  * @version 1.0.1
  * @since 2019-08-12
  */
-public class SimpleLinkedList<T> extends AbstractList<T> {
+public class SimpleLinkedList<T> extends AbstractList<T>{
 
     public SimpleLinkedList() {
         super();
@@ -114,6 +114,20 @@ public class SimpleLinkedList<T> extends AbstractList<T> {
     }
 
     Link<T> first, last;
+
+    @Override
+    public T get(T info) {
+        if (count > 0) {
+            Link<T> cursor = first;
+            int i = 0;
+            while (i < count && !info.equals(cursor.getInfo())) {
+                cursor = cursor.getNext();
+                i++;
+            }
+            return cursor.getInfo();
+        }
+        throw new IndexOutOfBoundsException();
+    }
 }
 
 class Link<T> {

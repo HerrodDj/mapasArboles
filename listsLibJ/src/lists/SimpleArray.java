@@ -123,4 +123,11 @@ public class SimpleArray<T> extends AbstractList<T> {
     private Object[] v;
     private int k0;
     private int k1;
+
+    @Override
+    public T get(T info) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
 }

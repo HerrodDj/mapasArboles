@@ -10,6 +10,7 @@ public class GVertex<V> {
         this.info = info;
         this.position = position;
         ed = new SimpleLinkedList<>();
+        this.etiqueta =false;
     }
 
     public GVertex(V info) {
@@ -36,10 +37,18 @@ public class GVertex<V> {
         this.ed = edges;
     }
 
-    public void agregarArco(Edge g){
+    public boolean isEtiqueta() {
+        return etiqueta;
+    }
+
+    public void setEtiqueta(boolean etiqueta) {
+        this.etiqueta = etiqueta;
+    }
+
+    public void agregarArco(Edge g) {
         this.getEdges().addLast(g);
     }
-    
+
     @Override
     public String toString() {
         return String.format("{%s, (%4.2f, %4.2f)}",
@@ -49,5 +58,9 @@ public class GVertex<V> {
     private final V info;
     private Point2D.Float position;
     private List<Edge> ed;
+    private boolean etiqueta;
+
+
+ 
     
 }

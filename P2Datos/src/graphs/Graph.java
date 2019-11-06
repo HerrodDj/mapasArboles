@@ -283,23 +283,45 @@ public class Graph<V, E> {
     
     //------------------------------------
     
-    public List<GVertex> dijkstra ( V inicio, V fin){
-        SimpleLinkedList<GVertex > list = new SimpleLinkedList<GVertex>();
+    public List<GVertex<V>> dijkstra ( V inicio, V fin){
+        SimpleLinkedList<GVertex<V>> list = new SimpleLinkedList<GVertex<V>>();
        
         GVertex ini = getVertex(inicio);
         GVertex fi= getVertex(fin);
         
-        Iterator<GVertex<V>> i = vertices.getIterator();
-        Iterator<Edge<V, E>> j = edges.getIterator();
-        list.addFirst(ini);
+        Iterator<GVertex<V>> vertice = vertices.getIterator();
+        Iterator<Edge<V, E>> edge = edges.getIterator();
+        list.addFirst(ini); //se agrega la primera etiqueta de paso  al algoritmo. 
         
-        while(i.hasNext() || j.hasNext()){
-                   
+        SimpleLinkedList<SimpleLinkedList<GVertex<V>>> mat = new SimpleLinkedList<SimpleLinkedList<GVertex<V>>>(); 
         
+        //primero crear la matriz
+        int s = 1;
+        ini.setEtiqueta(true); //se establece como espacio fijo en la lista
+        while(vertice.hasNext() || edge.hasNext()){
+            mat.addLast(new SimpleLinkedList<GVertex<V>>());
+            mat.get(s).addLast(ini);
+            
+            if (list.getLast() == fi) break;
         
         }
+        
+        
+        // Se agregan los elementos etiquetados con true a la lista
+        // Necesito ver si es necesario cambiar la "matriz" hecha con listas por una de vectores.
+        // El único problema del vector es la parte del cálculo en memoria
+        for(int i=0; i< mat.count(); i++){ 
+            for(int j =0; j<mat.get(i).count(); i++){
+                if(mat.get(i).get(j).isEtiqueta())
+                    list.addLast(mat.get(i).get(j));
+            }
+        }
+        
         return list;
     }
+    
+    
+    //----------------------------
     
     
     private static final float[] DASHES = {16f, 20f};

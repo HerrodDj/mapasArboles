@@ -2,7 +2,7 @@ package proyecto2;
 
 import data.XMLReader;
 import graphs.Graph;
-import java.awt.geom.Point2D;
+import graphs.view.Modelo;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,6 +14,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class Ejemplo {
 
     public static void main(String[] args) {
+        //<editor-fold defaultstate="collapsed" desc=" Configuracion UI ">
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             JFrame.setDefaultLookAndFeelDecorated(true);
@@ -22,29 +23,22 @@ public class Ejemplo {
                 | InstantiationException | UnsupportedLookAndFeelException ex) {
             System.err.printf("Excepción: '%s'%n", ex.getMessage());
         }
-
+        //</editor-fold> 
         new Ejemplo().init();
     }
 
     public void init() {
         try {
             Graph<Integer, Double> g2b = new Graph<>();
-            
-            int mx = 64;
-            int my = 64;
-            int sx = 72;
-            int sy = 96;
-            
             XMLReader reader = new XMLReader();
             reader.read(PATH, g2b);
-                        
             System.out.printf("%s%n%n", g2b);
             System.out.println();
             System.out.println(g2b.getAdjacencyInfo());
             System.out.println();
-            
+
             SwingUtilities.invokeLater(() -> {
-                new VentanaEjemplo("Proyecto 2", g2b).init();
+                new VentanaAplicacion("Proyecto 2", new Modelo(), g2b).init();
             });
 
         } catch (Exception ex) {

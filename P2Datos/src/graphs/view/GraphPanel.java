@@ -12,6 +12,19 @@ public class GraphPanel<V, E> extends JPanel {
 
     public GraphPanel(Graph<V, E> g) {
         this.g = g;
+        this.modelo = null;
+        configurar();
+    }
+
+    public GraphPanel(Modelo modelo) {
+        g = null;
+        this.modelo = modelo;
+        configurar();
+    }
+
+    public GraphPanel(Modelo modelo, Graph<V, E> g) {
+        this.g = g;
+        this.modelo = modelo;
         configurar();
     }
 
@@ -40,6 +53,7 @@ public class GraphPanel<V, E> extends JPanel {
         };
         runner.start();
     }
+
     public void init1() {
         runner1 = new Thread() {
             @Override
@@ -56,12 +70,11 @@ public class GraphPanel<V, E> extends JPanel {
         };
         runner1.start();
     }
-    
 
     @Override
     public void paintComponent(Graphics bg) {
         super.paintComponent(bg);
-         if (bkgnd != null) {
+        if (bkgnd != null) {
             bg.drawImage(bkgnd, 0, 0, this);
         }
         g.paint(bg, getBounds());
@@ -72,4 +85,5 @@ public class GraphPanel<V, E> extends JPanel {
     private Thread runner1;
     private Graph<V, E> g;
     private Image bkgnd = null;
+    private final Modelo modelo;
 }

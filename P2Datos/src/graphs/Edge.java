@@ -1,6 +1,6 @@
 package graphs;
 
-public class Edge<V, E> {
+public class Edge<V, E>  implements Comparable{
 
     public Edge(GVertex<V> tail, GVertex<V> head, E info) {
         this.tail = tail;
@@ -28,4 +28,14 @@ public class Edge<V, E> {
     private final GVertex<V> tail;
     private final GVertex<V> head;
     private final E info;
+
+    @Override
+    public int compareTo(Object t) {
+        
+        
+        
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
 }

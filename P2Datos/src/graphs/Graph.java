@@ -14,6 +14,7 @@ import java.util.Observable;
 import java.util.Random;
 import lists.Iterator;
 import lists.List;
+import lists.SimpleArray;
 import lists.SimpleLinkedList;
 
 public class Graph<V, E> {
@@ -285,31 +286,41 @@ public class Graph<V, E> {
     
     public List<GVertex<V>> dijkstra ( V inicio, V fin){
         SimpleLinkedList<GVertex<V>> list = new SimpleLinkedList<GVertex<V>>();
-       
         GVertex ini = getVertex(inicio);
         GVertex fi= getVertex(fin);
         
         Iterator<GVertex<V>> vertice = vertices.getIterator();
         Iterator<Edge<V, E>> edge = edges.getIterator();
-        list.addFirst(ini); //se agrega la primera etiqueta de paso  al algoritmo. 
         
-        SimpleLinkedList<SimpleLinkedList<GVertex<V>>> mat = new SimpleLinkedList<SimpleLinkedList<GVertex<V>>>(); 
-        
+        SimpleArray<SimpleArray<GVertex<V>>> mat = new SimpleArray<SimpleArray<GVertex<V>>>(vertices.count()); 
+                       
         //primero crear la matriz
-        int s = 1;
+
         ini.setEtiqueta(true); //se establece como espacio fijo en la lista
-        while(vertice.hasNext() || edge.hasNext()){
-            mat.addLast(new SimpleLinkedList<GVertex<V>>());
-            mat.get(s).addLast(ini);
+    //    GVertex<V> aux = getVertex(inicio);
+        GVertex<V> fijo = getVertex(inicio);
+
+        mat.addLast(new SimpleArray<GVertex<V>>(vertices.count()));
+        int peso= 0;
+        Edge a = fijo.getEdges().getFirst();
+        
+        while(fijo != fi){
+            for(int i=0; i < fijo.getEdges().count() ; i++){
+                if(fijo.getEdges().get(i).compareTo(a.getInfo()) > 0){//fijo.getEdges().get(i).getInfo < a.getInfo()
+                    a = fijo.getEdges().get(i);
+                }                
+            }
+            //tengo que establecer uno fijo
+            fijo.setEtiqueta(true);
+            fijo = a.getTail();
+            peso += (int)a.getInfo();
             
-            if (list.getLast() == fi) break;
+            
+        mat.addLast(new SimpleArray<GVertex<V>>());
         
         }
         
-        
         // Se agregan los elementos etiquetados con true a la lista
-        // Necesito ver si es necesario cambiar la "matriz" hecha con listas por una de vectores.
-        // El único problema del vector es la parte del cálculo en memoria
         for(int i=0; i< mat.count(); i++){ 
             for(int j =0; j<mat.get(i).count(); i++){
                 if(mat.get(i).get(j).isEtiqueta())
@@ -356,4 +367,6 @@ public class Graph<V, E> {
     private Point2D.Float p1;
     private static final double DT = 0.035;
     private double t = 0.0;
+
+ 
 }

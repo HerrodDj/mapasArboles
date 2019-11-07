@@ -5,6 +5,7 @@
  */
 package proyecto2;
 
+import graphs.GVertex;
 import graphs.Graph;
 import graphs.view.GraphPanel;
 import graphs.view.Modelo;
@@ -12,11 +13,15 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.Ellipse2D;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import lists.List;
 
 /**
  *
@@ -34,6 +39,8 @@ public class VentanaAplicacion extends javax.swing.JFrame {
         this.g = g;
         configurar();
         initComponents();
+        GraphPanel f = (GraphPanel) PanelMapa;
+        f.setPadre(this);
     }
 
     @SuppressWarnings("unchecked")
@@ -178,6 +185,14 @@ public class VentanaAplicacion extends javax.swing.JFrame {
         f.init();
         g.init();
         setVisible(true);
+    }
+
+    public void setValorInicioField(String valor) {
+        this.puntoPartidaTxt.setText(valor);
+    }
+
+    public void setValorDestinoField(String valueOf) {
+        this.puntoDestinoTxt.setText(valueOf);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

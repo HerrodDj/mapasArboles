@@ -98,15 +98,18 @@ public class GraphPanel<V, E> extends JPanel {
         this.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent ev) {
-
                 if (ev.getClickCount() == 1
                         && ev.getModifiers() == java.awt.event.InputEvent.BUTTON1_MASK) {
                     GVertex<Integer> seleccionado = seleccionarNodo(ev.getX(), ev.getY());
                     if (seleccionado != null) {
-                        //System.out.println("siii, entre");
                         padre.setValorInicioField(String.valueOf(seleccionado.getInfo()));
-                      
-                        //setText(String.valueOf(seleccionado.getInfo()));
+                    }
+                }
+                if (ev.getClickCount() == 1
+                        && ev.getModifiers() == java.awt.event.InputEvent.BUTTON3_MASK) {
+                    GVertex<Integer> seleccionado = seleccionarNodo(ev.getX(), ev.getY());
+                    if (seleccionado != null) {
+                        padre.setValorDestinoField(String.valueOf(seleccionado.getInfo()));
                     }
                 }
             }

@@ -187,8 +187,12 @@ public class VentanaAplicacion extends javax.swing.JFrame {
         setVisible(true);
     }
 
-    public void setValorInicioField(String valor){
+    public void setValorInicioField(String valor) {
         this.puntoPartidaTxt.setText(valor);
+    }
+
+    public void setValorDestinoField(String valueOf) {
+        this.puntoDestinoTxt.setText(valueOf);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -206,5 +210,5 @@ public class VentanaAplicacion extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     private final Modelo modelo;
     private final Graph<Integer, Double> g;
-    
+
 }

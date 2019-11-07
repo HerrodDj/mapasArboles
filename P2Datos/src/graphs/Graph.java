@@ -35,6 +35,10 @@ public class Graph<V, E> {
         }
         return r;
     }
+    
+    public List<GVertex<V>> getAllGVertex(){
+        return this.vertices;
+    }
 
     public List<GVertex<V>> getAdjacent(GVertex<V> v) {
         List<GVertex<V>> r = new SimpleLinkedList<>();

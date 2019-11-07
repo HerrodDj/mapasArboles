@@ -1,15 +1,21 @@
 package proyecto2;
 
+import graphs.GVertex;
 import graphs.Graph;
 import graphs.view.GraphPanel;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
+import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.Ellipse2D;
 import javax.swing.JFrame;
-
+import javax.swing.JOptionPane;
+import lists.List;
 
 public class VentanaEjemplo extends JFrame {
 
@@ -48,6 +54,8 @@ public class VentanaEjemplo extends JFrame {
         panelPrincipal.init();
         g.init();
     }
+
+
 
     private GraphPanel panelPrincipal;
     private final Graph<Integer, Double> g;

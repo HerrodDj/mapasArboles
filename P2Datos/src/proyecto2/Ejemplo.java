@@ -29,7 +29,7 @@ public class Ejemplo {
 
     public void init() {
         try {
-            Graph<Integer, Double> g2b = new Graph<>();
+            Graph<Integer, Integer> g2b = new Graph<>();
             XMLReader reader = new XMLReader();
             reader.read(PATH, g2b);
             System.out.printf("%s%n%n", g2b);

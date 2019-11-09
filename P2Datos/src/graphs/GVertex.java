@@ -55,6 +55,14 @@ public class GVertex<V>  {
                 getInfo(), getPosition().getX(), getPosition().getY());
     }
     
+    public Edge menor() {
+        Edge menor = ed.getFirst();
+       for (int i = 0; i < ed.count(); i++) {
+//            if (menor.getInfo() < ed.get(i).getInfo())
+//                menor = ed.get(i);
+        }
+        return menor;
+    }
     
     private final V info;
     private Point2D.Float position;

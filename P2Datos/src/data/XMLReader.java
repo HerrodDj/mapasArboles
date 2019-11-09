@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package data;
 
 import graphs.Graph;
@@ -16,10 +12,7 @@ import org.w3c.dom.Element;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-/**
- *
- * @author Juan Carlos
- */
+
 public class XMLReader {
 
     public void read(String path, Graph myGraph) throws Exception {
@@ -57,7 +50,8 @@ public class XMLReader {
                     Element myElement = (Element) myEdge;
                     int _head = Integer.parseInt(myElement.getAttribute("head"));
                     int _tail = Integer.parseInt(myElement.getAttribute("tail"));
-                    float _info = Float.parseFloat(myElement.getAttribute("info"));
+                    String k = myElement.getAttribute("info");
+                    int _info = Integer.parseInt(myElement.getAttribute("info"));
                     myGraph.addArc(_head, _tail, _info);
                 }else{
                     Element myElement = (Element) myEdge;

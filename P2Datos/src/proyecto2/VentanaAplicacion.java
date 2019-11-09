@@ -32,7 +32,7 @@ public class VentanaAplicacion extends javax.swing.JFrame {
     /**
      * Creates new form NewJFrame
      */
-    public VentanaAplicacion(String titulo, Modelo modelo, Graph<Integer, Double> g)
+    public VentanaAplicacion(String titulo, Modelo modelo, Graph<Integer, Integer> g)
             throws HeadlessException {
         super(titulo);
         this.modelo = modelo;
@@ -176,7 +176,7 @@ public class VentanaAplicacion extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new VentanaAplicacion("Proyecto #2 (WAZE)", new Modelo(), new Graph<Integer, Double>()).init();
+            new VentanaAplicacion("Proyecto #2 (WAZE)", new Modelo(), new Graph<Integer, Integer>()).init();
         });
     }
 
@@ -209,6 +209,6 @@ public class VentanaAplicacion extends javax.swing.JFrame {
     private javax.swing.JTextField puntoPartidaTxt;
     // End of variables declaration//GEN-END:variables
     private final Modelo modelo;
-    private final Graph<Integer, Double> g;
+    private final Graph<Integer, Integer> g;
 
 }

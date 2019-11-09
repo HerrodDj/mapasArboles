@@ -43,9 +43,9 @@ public class Graph<V, E> {
 
     public List<GVertex<V>> getAdjacent(GVertex<V> v) {
         List<GVertex<V>> r = new SimpleLinkedList<>();
-        Iterator<Edge<V, E>> i = edges.getIterator();
+        Iterator<Edge<V>> i = edges.getIterator();
         while (i.hasNext()) {
-            Edge<V, E> e = i.getNext();
+            Edge<V> e = i.getNext();
             if (e.getHead().getInfo().equals(v.getInfo())) {
                 r.addLast(e.getTail());
             }
@@ -73,7 +73,7 @@ public class Graph<V, E> {
         }
     }
 
-    public void add(GVertex<V> tail, GVertex<V> head, E w) {
+    public void add(GVertex<V> tail, GVertex<V> head, int w) {
         if ((tail == null) || (head == null)) {
             throw new NullPointerException("No existe el vértice.");
         }
@@ -83,15 +83,15 @@ public class Graph<V, E> {
         int p = g.count();
     }
 
-    public void add(V t, V h, E w) {
+    public void add(V t, V h, int w) {
         add(getVertex(t), getVertex(h), w);
     }
 
     public void addArc(V t, V h) {
-        add(t, h, null);
+        add(t, h, 0);
     }
 
-    public void addArc(V t, V h, E x) {
+    public void addArc(V t, V h, int x) {
         add(t, h, x);
     }
 
@@ -202,9 +202,9 @@ public class Graph<V, E> {
         g.setFont(TIPO_BASE);
         FontMetrics fm = g.getFontMetrics();
 
-        Iterator<Edge<V, E>> i = edges.getIterator();
+        Iterator<Edge<V>> i = edges.getIterator();
         while (i.hasNext()) {
-            Edge<V, E> e = i.getNext();
+            Edge<V> e = i.getNext();
             g.setStroke(TRAZO_BASE);
             g.setColor(Color.BLACK);
 
@@ -287,52 +287,21 @@ public class Graph<V, E> {
     
     
     //------------------------------------
-    
-    public List<GVertex<V>> dijkstra ( V inicio, V fin){
-        SimpleLinkedList<GVertex<V>> list = new SimpleLinkedList<GVertex<V>>();
-        GVertex ini = getVertex(inicio);
-        GVertex fi= getVertex(fin);
-        
-        Iterator<GVertex<V>> vertice = vertices.getIterator();
-        Iterator<Edge<V, E>> edge = edges.getIterator();
-        
-        SimpleArray<SimpleArray<GVertex<V>>> mat = new SimpleArray<SimpleArray<GVertex<V>>>(vertices.count()); 
-                       
-        //primero crear la matriz
-
-        ini.setEtiqueta(true); //se establece como espacio fijo en la lista
-    //    GVertex<V> aux = getVertex(inicio);
-        GVertex<V> fijo = getVertex(inicio);
-
-        mat.addLast(new SimpleArray<GVertex<V>>(vertices.count()));
-        int peso= 0;
-        Edge a = fijo.getEdges().getFirst();
-        
-        while(fijo != fi){
-            for(int i=0; i < fijo.getEdges().count() ; i++){
-                if(fijo.getEdges().get(i).compareTo(a.getInfo()) > 0){//fijo.getEdges().get(i).getInfo < a.getInfo()
-                    a = fijo.getEdges().get(i);
-                }                
-            }
-            //tengo que establecer uno fijo
-            fijo.setEtiqueta(true);
-            fijo = a.getTail();
-            peso += (int)a.getInfo();
+    public List<GVertex<V>> dijkstra(GVertex<V> inicio, GVertex<V> fin) { //tiene que recivir directamente 
+        SimpleLinkedList<GVertex<V>> cerrado = new SimpleLinkedList<GVertex<V>>();
+        SimpleLinkedList<GVertex<V>> abierto = new SimpleLinkedList<GVertex<V>>();
+        GVertex<V> aux = vertices.get(inicio);
+        SimpleArray<Edge<V>> mat = new SimpleArray<Edge<V>>();
+        int acum = 0;
+        if (fin != aux) {
+            dijkstra(aux, fin);
             
             
-        mat.addLast(new SimpleArray<GVertex<V>>());
-        
+            
+        } else {
+            return cerrado;
         }
-        
-        // Se agregan los elementos etiquetados con true a la lista
-        for(int i=0; i< mat.count(); i++){ 
-            for(int j =0; j<mat.get(i).count(); i++){
-                if(mat.get(i).get(j).isEtiqueta())
-                    list.addLast(mat.get(i).get(j));
-            }
-        }
-        
-        return list;
+        return null;
     }
     
     
@@ -363,7 +332,7 @@ public class Graph<V, E> {
     private Point2D.Float df = new Point2D.Float(0, 0);
 
     private final List<GVertex<V>> vertices;
-    private final List<Edge<V, E>> edges;
+    private final List<Edge<V>> edges;
 
     private static final int MAX_WAIT = 100;
     private boolean active = false;

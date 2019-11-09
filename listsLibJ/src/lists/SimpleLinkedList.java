@@ -128,6 +128,19 @@ public class SimpleLinkedList<T> extends AbstractList<T>{
         }
         throw new IndexOutOfBoundsException();
     }
+    
+    public boolean search(T info){
+    if (count > 0) {
+            Link<T> cursor = first;
+            int i = 0;
+            while (i < count && !info.equals(cursor.getInfo())) {
+                cursor = cursor.getNext();
+                i++;
+            }
+            return count == i;
+        }
+    return false;
+    }
 }
 
 class Link<T> {
@@ -152,6 +165,7 @@ class Link<T> {
     public void setNext(Link<T> next) {
         this.next = next;
     }
+    
 
     private T info;
     private Link<T> next;

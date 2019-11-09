@@ -58,8 +58,8 @@ public class GVertex<V>  {
     public Edge menor() {
         Edge menor = ed.getFirst();
        for (int i = 0; i < ed.count(); i++) {
-//            if (menor.getInfo() < ed.get(i).getInfo())
-//                menor = ed.get(i);
+           if (menor.getInfo() < ed.get(i).getInfo())
+                menor = ed.get(i);
         }
         return menor;
     }

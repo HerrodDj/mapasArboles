@@ -284,29 +284,63 @@ public class Graph<V, E> {
     public void setActive(boolean active) {
         this.active = active;
     }
-    
-    
+
     //------------------------------------
-    public List<GVertex<V>> dijkstra(GVertex<V> inicio, GVertex<V> fin) { //tiene que recivir directamente 
-        SimpleLinkedList<GVertex<V>> cerrado = new SimpleLinkedList<GVertex<V>>();
-        SimpleLinkedList<GVertex<V>> abierto = new SimpleLinkedList<GVertex<V>>();
+    public List<Edge<V>> dijkstra(GVertex<V> inicio, GVertex<V> fin) { //tiene que recivir directamente 
+        SimpleLinkedList<Edge<V>> cerrado = new SimpleLinkedList<Edge<V>>();
+        SimpleLinkedList<GVertex<V>> abierto = abierta(inicio, new SimpleLinkedList<GVertex<V>>());
+        SimpleLinkedList<GVertex<V>> cerrada = new SimpleLinkedList<GVertex<V>>();
+        cerrada.addFirst(inicio);
+        
+        
+        SimpleArray<SimpleArray<Edge<V>>> mat = new SimpleArray<SimpleArray<Edge<V>>>(vertices.count());
+        
+        
+        
         GVertex<V> aux = vertices.get(inicio);
-        SimpleArray<Edge<V>> mat = new SimpleArray<Edge<V>>();
-        int acum = 0;
         if (fin != aux) {
-            dijkstra(aux, fin);
-            
-            
-            
-        } else {
-            return cerrado;
+            dijkstra(aux, fin, cerrado);
         }
-        return null;
+        return cerrado;
+
+    }
+
+    public SimpleLinkedList<Edge<V>> dijkstra(GVertex<V> aux, GVertex<V> fin, SimpleLinkedList<Edge<V>> cerrado) {
+        //SimpleLinkedList<GVertex<V>> abierto = new SimpleLinkedList<GVertex<V>>();
+
+        // SimpleArray<Edge<V>> mat = new SimpleArray<Edge<V>>();
+        //Para el caso 1: caso complicado en caso de que el menor termine llevando a un camino más largo
+        
+        GVertex<V> aux2 = vertices.get(aux.menor().getHead());
+        for (int j = 0; j < aux2.getEdges().count(); j++) {
+            if (!cerrado.search(aux2.getEdges().get(j))) {
+                for (int i = 0; i < aux.getEdges().count(); i++) {
+                    if (aux2.getEdges().get(j).getHead() == aux.getEdges().get(i).getHead()) { //si el  de menor peso llega de alguna manera al mismo punto que otro edge
+                        if (aux.menor().getInfo() + aux2.getEdges().get(j).getInfo()
+                                > aux.getEdges().get(i).getInfo()) {
+                            cerrado.addLast(aux.getEdges().get(i));
+                            aux = vertices.get(aux.getEdges().get(i).getHead());
+                        }
+                    }
+                }
+            }
+        }
+        
+        cerrado.addLast(aux.menor());
+        
+        return cerrado;
     }
     
     
+    public SimpleLinkedList<GVertex<V>> abierta(GVertex<V> inicio, SimpleLinkedList<GVertex<V>> abierto) {
+        for (int i = 0; i < inicio.getEdges().count(); i++) {
+            abierto.addLast(inicio.getEdges().get(i).getHead());
+        }
+        return abierto;
+
+    }
     //----------------------------
-    
+
     
     private static final float[] DASHES = {16f, 20f};
     private static final Stroke TRAZO_BASE

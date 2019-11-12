@@ -308,7 +308,7 @@ public class Graph<V, E> {
     public SimpleLinkedList<Edge<V>> dijkstra(GVertex<V> aux, GVertex<V> fin, SimpleLinkedList<Edge<V>> cerrado) {
         //SimpleLinkedList<GVertex<V>> abierto = new SimpleLinkedList<GVertex<V>>();
 
-        // SimpleArray<Edge<V>> mat = new SimpleArray<Edge<V>>();
+        // SimpleArray<Edge<V>> mat = new SimpleArray<Edge<V>>();    
         //Para el caso 1: caso complicado en caso de que el menor termine llevando a un camino más largo
         
         GVertex<V> aux2 = vertices.get(aux.menor().getHead());

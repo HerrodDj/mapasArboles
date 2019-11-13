@@ -285,62 +285,63 @@ public class Graph<V, E> {
         this.active = active;
     }
 
-    //------------------------------------
-    public List<Edge<V>> dijkstra(GVertex<V> inicio, GVertex<V> fin) { //tiene que recivir directamente 
-        SimpleLinkedList<Edge<V>> cerrado = new SimpleLinkedList<Edge<V>>();
-        SimpleLinkedList<GVertex<V>> abierto = abierta(inicio, new SimpleLinkedList<GVertex<V>>());
-        SimpleLinkedList<GVertex<V>> cerrada = new SimpleLinkedList<GVertex<V>>();
-        cerrada.addFirst(inicio);
-        
-        
-        SimpleArray<SimpleArray<Edge<V>>> mat = new SimpleArray<SimpleArray<Edge<V>>>(vertices.count());
-        
-        
-        
-        GVertex<V> aux = vertices.get(inicio);
-        if (fin != aux) {
-            dijkstra(aux, fin, cerrado);
-        }
-        return cerrado;
-
+//---------------------------------------------------
+    //pensar si es necesario generarlo todo de una ?
+    public SimpleLinkedList<GGVertex<V>> generaLista(List<GVertex<V>> origen){
+        SimpleLinkedList<GGVertex<V>>list = new SimpleLinkedList<GGVertex<V>>();
+        for(int i=0; i<origen.count(); i++){
+            list.addFirst(new GGVertex<V>((GVertex<V>)origen.get(i), 0)); //esto puede dar lata
+        }        
+        return list;
     }
 
-    public SimpleLinkedList<Edge<V>> dijkstra(GVertex<V> aux, GVertex<V> fin, SimpleLinkedList<Edge<V>> cerrado) {
-        //SimpleLinkedList<GVertex<V>> abierto = new SimpleLinkedList<GVertex<V>>();
-
-        // SimpleArray<Edge<V>> mat = new SimpleArray<Edge<V>>();    
-        //Para el caso 1: caso complicado en caso de que el menor termine llevando a un camino más largo
-        
-        GVertex<V> aux2 = vertices.get(aux.menor().getHead());
-        for (int j = 0; j < aux2.getEdges().count(); j++) {
-            if (!cerrado.search(aux2.getEdges().get(j))) {
-                for (int i = 0; i < aux.getEdges().count(); i++) {
-                    if (aux2.getEdges().get(j).getHead() == aux.getEdges().get(i).getHead()) { //si el  de menor peso llega de alguna manera al mismo punto que otro edge
-                        if (aux.menor().getInfo() + aux2.getEdges().get(j).getInfo()
-                                > aux.getEdges().get(i).getInfo()) {
-                            cerrado.addLast(aux.getEdges().get(i));
-                            aux = vertices.get(aux.getEdges().get(i).getHead());
-                        }
-                    }
-                }
-            }
+    public SimpleLinkedList<GVertex<V>> convertir(SimpleLinkedList<GGVertex<V>> origen) {
+        SimpleLinkedList<GVertex<V>> list = new SimpleLinkedList<GVertex<V>>();
+        for (int i = 0; i < origen.count(); i++) {
+            list.addLast(origen.get(i).getOrigen());
         }
-        
-        cerrado.addLast(aux.menor());
-        
-        return cerrado;
+        return list;
     }
     
     
-    public SimpleLinkedList<GVertex<V>> abierta(GVertex<V> inicio, SimpleLinkedList<GVertex<V>> abierto) {
-        for (int i = 0; i < inicio.getEdges().count(); i++) {
-            abierto.addLast(inicio.getEdges().get(i).getHead());
-        }
-        return abierto;
+    //Realizar el algoritmo
+    public SimpleLinkedList<GVertex<V>> disktra(GVertex<V> inicio, GVertex<V> fin){
+        SimpleLinkedList<GVertex<V>> list =new SimpleLinkedList<GVertex<V>>(); //lista final
+        SimpleLinkedList<GGVertex<V>> visitados = generaLista(vertices);  //es para verificar si un vertice ha sido o no evaluado
+        SimpleLinkedList<GGVertex<V>> tabla = new SimpleLinkedList<GGVertex<V>>();
+//                
+//        GVertex<V> aux = vertices.get(inicio);
+//        GGVertex<V> auxGG = new GGVertex<V>(aux, 0);
+//        while() {
+//            for (int i = 0; i < aux.getEdges().count(); i++) {
+//                auxGG.setPeso(aux.getEdges().get(i).getInfo());
+//
+//            }
+//        }
+    //    while () {
 
+   //     }
+        
+        return list;   
     }
-    //----------------------------
-
+    
+    
+    //genera la ruta directamente desde una lista
+    public SimpleLinkedList<GVertex<V>> disktra(GVertex<V> inicio, GVertex<V> fin, SimpleLinkedList<GVertex<V>> list){
+        
+        for(int i=0; i< vertices.count(); i++){
+            
+            
+        }
+        
+        return list;
+    
+    }
+    
+    
+    
+    
+//---------------------------------------------------
     
     private static final float[] DASHES = {16f, 20f};
     private static final Stroke TRAZO_BASE

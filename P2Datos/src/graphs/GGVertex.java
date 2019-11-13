@@ -1,34 +1,33 @@
 package graphs;
 
 
-public class GGVertex {
-
-    public GGVertex(GVertex vertice, boolean visitado, int peso) {
-        this.vertice = vertice;
+public class GGVertex<V> {
+    
+    public GGVertex(GVertex<V> origen, boolean visitado, int peso) {
+        this.origen = origen;
         this.visitado = visitado;
         this.peso = peso;
     }
-    
-    
-    public GGVertex(GVertex vertice,  int peso) {
-        this.vertice = vertice;
+        
+    public GGVertex(GVertex<V> origen,  int peso) {
+        this.origen = origen;
         this.visitado = false;
         this.peso = peso;
     }
     
+    
     public GGVertex(){
-        this.vertice =null;
+        this.origen =null;
         this.peso =0;
         this.visitado=false;
-    
     }
  
-    public GVertex getVertice() {
-        return vertice;
+    public GVertex<V> getOrigen() {
+        return origen;
     }
 
-    public void setVertice(GVertex vertice) {
-        this.vertice = vertice;
+    public void setOrigen(GVertex<V> origen) {
+        this.origen = origen;
     }
 
     public boolean isVisitado() {
@@ -46,8 +45,15 @@ public class GGVertex {
     public void setPeso(int peso) {
         this.peso = peso;
     }
- 
-    private GVertex vertice;
+
+    @Override
+    public String toString() {
+        return String.format("origen %s , %peso: %d", origen.toString(), peso);
+    }
+    
+    
+
+    private GVertex<V> origen;
     private boolean visitado;
     private int peso;
     

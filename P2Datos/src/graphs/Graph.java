@@ -290,10 +290,25 @@ public class Graph<V, E> {
     }
 
     //Realizar el algoritmo
-//    public SimpleLinkedList<GVertex<V>> disktra(GVertex<V> inicio, GVertex<V> fin) {
-//        SimpleLinked<GVertex<
-//        return list;
-//    }
+   public SimpleLinkedList<GVertex<V>> disktra(GVertex<V> inicio, GVertex<V> fin) {
+        SimpleLinkedList<GVertex<V>> list = new SimpleLinkedList<GVertex<V>>();
+        SimpleLinkedList<GGVertex<V>> lista = getAllLikeGGVertex(inicio);
+        GVertex<V> aux = new GVertex<V>();
+        int i;
+        for (i = 0; i < lista.count(); i++) {
+            if (lista.get(i).getInfo().getInfo() == fin.getInfo()) {
+                list.addFirst(lista.get(i).getInfo());
+                aux = lista.get(i).getOptimo();
+                break;
+            }
+        }
+        while (inicio != aux) {
+            list.addLast(aux);
+            aux = lista.get(i).getOptimo(); //como putas agarro el último
+        }
+
+        return list;
+    }
 
 
 //algoritmos juan para la ruta mas corta

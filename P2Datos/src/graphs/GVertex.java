@@ -16,6 +16,11 @@ public class GVertex<V> {
     public GVertex(V info) {
         this(info, new Point2D.Float(0f, 0f));
     }
+    
+    public GVertex(){
+        this(null,new Point2D.Float(0f, 0f) );
+    
+    }
 
     public V getInfo() {
         return info;

@@ -36,8 +36,8 @@ public class Graph<V, E> {
         }
         return r;
     }
-    
-    public List<GVertex<V>> getAllGVertex(){
+
+    public List<GVertex<V>> getAllGVertex() {
         return this.vertices;
     }
 
@@ -101,7 +101,7 @@ public class Graph<V, E> {
 
     public void init(GVertex<V> pathStart) {
         Random r = new Random();
-
+        SimpleLinkedList<GGVertex<V>> myList = this.getAllLikeGGVertex(pathStart);
         setActive(true);
         new Thread() {
             @Override
@@ -111,24 +111,10 @@ public class Graph<V, E> {
                     List<GVertex<V>> vs = getAdjacent(v0);
                     p0 = v0.getPosition();
 
-                    // Se define el criterio para seleccionar
-                    // el siguiente vértice.
                     GVertex<V> v1 = vs.get(r.nextInt(vs.count()));
                     p1 = v1.getPosition();
-//                    Iterator<Edge<V, E>> i = edges.getIterator();
-//                    while (i.hasNext()) {
-//                        
-//                        while (i.getNext().getTail().getInfo().equals(v0.getInfo())) {
-//                            if (i.getNext().getInfo().equals(4.0)) {
-//                                GVertex<V> aux = i.getNext().getHead();
-//                                GVertex<V> v1= vs.get(aux);
-//                                p1 = v1.getPosition();
-//                            }
-//                        }
-//                    }
-                    
 
-                   System.out.printf("v(%s): %s%n", v0.getInfo(), p0);
+                    System.out.printf("v(%s): %s%n", v0.getInfo(), p0);
                     System.out.printf("v(%s): %s%n", v1.getInfo(), p1);
 
                     t = 0.0;
@@ -287,11 +273,11 @@ public class Graph<V, E> {
 
 //---------------------------------------------------
     //pensar si es necesario generarlo todo de una ?
-    public SimpleLinkedList<GGVertex<V>> generaLista(List<GVertex<V>> origen){
-        SimpleLinkedList<GGVertex<V>>list = new SimpleLinkedList<GGVertex<V>>();
-        for(int i=0; i<origen.count(); i++){
-            list.addFirst(new GGVertex<V>((GVertex<V>)origen.get(i), 0)); //esto puede dar lata
-        }        
+    public SimpleLinkedList<GGVertex<V>> generaLista(List<GVertex<V>> origen) {
+        SimpleLinkedList<GGVertex<V>> list = new SimpleLinkedList<GGVertex<V>>();
+        for (int i = 0; i < origen.count(); i++) {
+            list.addFirst(new GGVertex<V>((GVertex<V>) origen.get(i), 0)); //esto puede dar lata
+        }
         return list;
     }
 
@@ -302,47 +288,62 @@ public class Graph<V, E> {
         }
         return list;
     }
-    
-    
-    //Realizar el algoritmo
-    public SimpleLinkedList<GVertex<V>> disktra(GVertex<V> inicio, GVertex<V> fin){
-        SimpleLinkedList<GVertex<V>> list =new SimpleLinkedList<GVertex<V>>(); //lista final
-        SimpleLinkedList<GGVertex<V>> visitados = generaLista(vertices);  //es para verificar si un vertice ha sido o no evaluado
-        SimpleLinkedList<GGVertex<V>> tabla = new SimpleLinkedList<GGVertex<V>>();
-//                
-//        GVertex<V> aux = vertices.get(inicio);
-//        GGVertex<V> auxGG = new GGVertex<V>(aux, 0);
-//        while() {
-//            for (int i = 0; i < aux.getEdges().count(); i++) {
-//                auxGG.setPeso(aux.getEdges().get(i).getInfo());
-//
-//            }
-//        }
-    //    while () {
 
-   //     }
-        
-        return list;   
-    }
-    
-    
-    //genera la ruta directamente desde una lista
-    public SimpleLinkedList<GVertex<V>> disktra(GVertex<V> inicio, GVertex<V> fin, SimpleLinkedList<GVertex<V>> list){
-        
-        for(int i=0; i< vertices.count(); i++){
-            
-            
+    //Realizar el algoritmo
+    public SimpleLinkedList<GVertex<V>> disktra(GVertex<V> inicio, GVertex<V> fin) {
+        SimpleLinkedList<GVertex<V>> list = new SimpleLinkedList<GVertex<V>>(); //lista final
+        SimpleLinkedList<GGVertex<V>> visitados = this.getAllLikeGGVertex(inicio);  //es para verificar si un vertice ha sido o no evaluado
+        SimpleLinkedList<GGVertex<V>> tabla = new SimpleLinkedList<GGVertex<V>>();
+        for (int i = 0; i < visitados.count(); i++) {
+            //visitados.get(i).getOrigen().
         }
-        
         return list;
-    
     }
-    
-    
-    
-    
+
+    //genera la ruta directamente desde una lista
+    public SimpleLinkedList<GVertex<V>> disktra(GVertex<V> inicio, GVertex<V> fin, SimpleLinkedList<GVertex<V>> list) {
+
+        for (int i = 0; i < vertices.count(); i++) {
+
+        }
+
+        return list;
+
+    }
+
+//algoritmos juan para la ruta mas corta
+    public SimpleLinkedList<GGVertex<V>> getAllLikeGGVertex(GVertex<V> origen) {
+
+        SimpleLinkedList<GGVertex<V>> myGGvertexList = new SimpleLinkedList<>();
+        int val = 0; //Peso desde el origen al vertices.get(c)
+        for (int c = 0; c < vertices.count(); c++) {
+            if ((val = origen.getVertexWeigth(vertices.get(c))) != -1) {
+                if (val > 0) {
+                    myGGvertexList.addFirst(new GGVertex(origen, vertices.get(c), null, false, val));
+                } else {
+                    GGVertex myggvert = null;
+                    for (int i = 0; i < myGGvertexList.count(); i++) {
+                        if ((val = myGGvertexList.get(i).getVertexWeigth(vertices.get(c))) > 0) {
+                            if (myggvert == null) {
+                                myggvert = new GGVertex(origen, vertices.get(c), myGGvertexList.get(i).getInfo(), false, val+myGGvertexList.get(i).getPeso());
+                            }else if (myggvert.getPeso() > myGGvertexList.get(i).getPeso()) {
+                                myggvert.setOptimo(vertices.get(c));
+                                myggvert.setPeso(val + myggvert.getOptimo().getVertexWeigth(origen));
+                            }
+                        }
+                    }
+                    myGGvertexList.addFirst(myggvert);
+
+                    //actualizar la tabla si encuentra otro menor
+                }
+            }
+        }
+        return myGGvertexList;
+
+    }
+
+//--------------------------------------
 //---------------------------------------------------
-    
     private static final float[] DASHES = {16f, 20f};
     private static final Stroke TRAZO_BASE
             = new BasicStroke(36f,
@@ -375,6 +376,4 @@ public class Graph<V, E> {
     private Point2D.Float p1;
     private static final double DT = 0.035;
     private double t = 0.0;
-
- 
 }

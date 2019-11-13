@@ -290,26 +290,11 @@ public class Graph<V, E> {
     }
 
     //Realizar el algoritmo
-    public SimpleLinkedList<GVertex<V>> disktra(GVertex<V> inicio, GVertex<V> fin) {
-        SimpleLinkedList<GVertex<V>> list = new SimpleLinkedList<GVertex<V>>(); //lista final
-        SimpleLinkedList<GGVertex<V>> visitados = this.getAllLikeGGVertex(inicio);  //es para verificar si un vertice ha sido o no evaluado
-        SimpleLinkedList<GGVertex<V>> tabla = new SimpleLinkedList<GGVertex<V>>();
-        for (int i = 0; i < visitados.count(); i++) {
-            //visitados.get(i).getOrigen().
-        }
-        return list;
-    }
+//    public SimpleLinkedList<GVertex<V>> disktra(GVertex<V> inicio, GVertex<V> fin) {
+//        SimpleLinked<GVertex<
+//        return list;
+//    }
 
-    //genera la ruta directamente desde una lista
-    public SimpleLinkedList<GVertex<V>> disktra(GVertex<V> inicio, GVertex<V> fin, SimpleLinkedList<GVertex<V>> list) {
-
-        for (int i = 0; i < vertices.count(); i++) {
-
-        }
-
-        return list;
-
-    }
 
 //algoritmos juan para la ruta mas corta
     public SimpleLinkedList<GGVertex<V>> getAllLikeGGVertex(GVertex<V> origen) {
@@ -325,10 +310,13 @@ public class Graph<V, E> {
                     for (int i = 0; i < myGGvertexList.count(); i++) {
                         if ((val = myGGvertexList.get(i).getVertexWeigth(vertices.get(c))) > 0) {
                             if (myggvert == null) {
-                                myggvert = new GGVertex(origen, vertices.get(c), myGGvertexList.get(i).getInfo(), false, val+myGGvertexList.get(i).getPeso());
-                            }else if (myggvert.getPeso() > myGGvertexList.get(i).getPeso()) {
-                                myggvert.setOptimo(vertices.get(c));
-                                myggvert.setPeso(val + myggvert.getOptimo().getVertexWeigth(origen));
+                                myggvert = new GGVertex(origen, vertices.get(c), myGGvertexList.get(i).getInfo(), false, val + myGGvertexList.get(i).getPeso());
+                            } else {
+                                if (myggvert.getPeso() > myGGvertexList.get(i).getPeso() + myGGvertexList.get(i).getVertexWeigth(myggvert.getInfo())) { //falta la suma del peso desde el nodo i hasta a el objetivo(final)
+                                    myggvert.setOptimo(vertices.get(c));
+                                    myggvert.setPeso(val + myggvert.getOptimo().getVertexWeigth(origen));
+                                    
+                                }
                             }
                         }
                     }

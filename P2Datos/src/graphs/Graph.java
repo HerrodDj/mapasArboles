@@ -303,8 +303,9 @@ public class Graph<V, E> {
             }
         }
         while (inicio != aux) {
-            list.addLast(aux);
+            list.addFirst(aux);
             aux = lista.get(i).getOptimo(); //como putas agarro el último
+            lista.get(i).getOptimo().getVertexWeigth(inicio);
         }
 
         return list;

@@ -102,6 +102,7 @@ public class Graph<V, E> {
     public void init(GVertex<V> pathStart) {
         Random r = new Random();
         SimpleLinkedList<GGVertex<V>> myList = this.getAllLikeGGVertex(pathStart);
+        SimpleLinkedList<GVertex<V>> lt = this.verticesOptimos(vertices.getFirst(), vertices.getLast());
         setActive(true);
         new Thread() {
             @Override
@@ -109,23 +110,28 @@ public class Graph<V, E> {
                 GVertex<V> v0 = pathStart;
                 while (isActive()) {
                     List<GVertex<V>> vs = getAdjacent(v0);
-                    p0 = v0.getPosition();
+                    int k = 0;
+                    while (k != lt.count()) {
+                        p0 = v0.getPosition();
+                        GVertex<V> v1 = lt.get(k);
+                        p1 = v1.getPosition();
 
-                    GVertex<V> v1 = vs.get(r.nextInt(vs.count()));
-                    p1 = v1.getPosition();
+                        System.out.printf("v(%s): %s%n", v0.getInfo(), p0);
+                        System.out.printf("v(%s): %s%n", v1.getInfo(), p1);
 
-                    System.out.printf("v(%s): %s%n", v0.getInfo(), p0);
-                    System.out.printf("v(%s): %s%n", v1.getInfo(), p1);
-
-                    t = 0.0;
-                    while (t <= 1.0) {
-                        t += DT;
-                        try {
-                            Thread.sleep(MAX_WAIT);
-                        } catch (InterruptedException ex) {
+                        t = 0.0;
+                        if (!p1.equals(lt.getFirst().getPosition())) {
+                            while (t <= 1.0) {
+                                t += DT;
+                                try {
+                                    Thread.sleep(MAX_WAIT);
+                                } catch (InterruptedException ex) {
+                                }
+                            }
                         }
+                        v0 = v1;
+                        k++;
                     }
-                    v0 = v1;
                 }
             }
 
@@ -274,15 +280,15 @@ public class Graph<V, E> {
 //---------------------------------------------------
     //pensar si es necesario generarlo todo de una ?
     public SimpleLinkedList<GGVertex<V>> generaLista(List<GVertex<V>> origen) {
-        SimpleLinkedList<GGVertex<V>> list = new SimpleLinkedList<GGVertex<V>>();
+        SimpleLinkedList<GGVertex<V>> list = new SimpleLinkedList<>();
         for (int i = 0; i < origen.count(); i++) {
-            list.addFirst(new GGVertex<V>((GVertex<V>) origen.get(i), 0)); //esto puede dar lata
+            list.addFirst(new GGVertex<>((GVertex<V>) origen.get(i), 0)); //esto puede dar lata
         }
         return list;
     }
 
     public SimpleLinkedList<GVertex<V>> convertir(SimpleLinkedList<GGVertex<V>> origen) {
-        SimpleLinkedList<GVertex<V>> list = new SimpleLinkedList<GVertex<V>>();
+        SimpleLinkedList<GVertex<V>> list = new SimpleLinkedList<>();
         for (int i = 0; i < origen.count(); i++) {
             list.addLast(origen.get(i).getOrigen());
         }
@@ -290,27 +296,29 @@ public class Graph<V, E> {
     }
 
     //Realizar el algoritmo
-   public SimpleLinkedList<GVertex<V>> disktra(GVertex<V> inicio, GVertex<V> fin) {
-        SimpleLinkedList<GVertex<V>> list = new SimpleLinkedList<GVertex<V>>();
+    public SimpleLinkedList<GVertex<V>> verticesOptimos(GVertex<V> inicio, GVertex<V> fin) {
+        SimpleLinkedList<GVertex<V>> list = new SimpleLinkedList<>();
         SimpleLinkedList<GGVertex<V>> lista = getAllLikeGGVertex(inicio);
-        GVertex<V> aux = new GVertex<V>();
+        GVertex<V> aux = new GVertex<>();
         int i;
+        int k = 0;
         for (i = 0; i < lista.count(); i++) {
             if (lista.get(i).getInfo().getInfo() == fin.getInfo()) {
                 list.addFirst(lista.get(i).getInfo());
                 aux = lista.get(i).getOptimo();
+                k = i + 1;
                 break;
             }
         }
-        while (inicio != aux) {
+        while (aux != null) {
             list.addFirst(aux);
-            aux = lista.get(i).getOptimo(); //como putas agarro el último
-            lista.get(i).getOptimo().getVertexWeigth(inicio);
+            aux = lista.get(k).getOptimo(); //como demonios agarro el último
+            k++;
         }
+        list.addFirst(inicio);
 
         return list;
     }
-
 
 //algoritmos juan para la ruta mas corta
     public SimpleLinkedList<GGVertex<V>> getAllLikeGGVertex(GVertex<V> origen) {
@@ -331,7 +339,7 @@ public class Graph<V, E> {
                                 if (myggvert.getPeso() > myGGvertexList.get(i).getPeso() + myGGvertexList.get(i).getVertexWeigth(myggvert.getInfo())) { //falta la suma del peso desde el nodo i hasta a el objetivo(final)
                                     myggvert.setOptimo(vertices.get(c));
                                     myggvert.setPeso(val + myggvert.getOptimo().getVertexWeigth(origen));
-                                    
+
                                 }
                             }
                         }

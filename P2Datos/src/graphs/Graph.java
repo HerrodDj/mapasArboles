@@ -22,6 +22,7 @@ public class Graph<V, E> {
     public Graph() {
         vertices = new SimpleLinkedList<>();
         edges = new SimpleLinkedList<>();
+        active = false;
     }
 
     public GVertex<V> getVertex(V v) {
@@ -103,8 +104,9 @@ public class Graph<V, E> {
         Random r = new Random();
         SimpleLinkedList<GGVertex<V>> myList = this.getAllLikeGGVertex(pathStart);
         SimpleLinkedList<GVertex<V>> lt = this.verticesOptimos(vertices.getFirst(), vertices.getLast());
-        setActive(true);
-        new Thread() {
+        // setActive(false);
+        currentT
+                = new Thread() {
             @Override
             public void run() {
                 GVertex<V> v0 = pathStart;
@@ -135,7 +137,9 @@ public class Graph<V, E> {
                 }
             }
 
-        }.start();
+        };
+        currentT.start();
+        
     }
 
     @Override
@@ -275,6 +279,18 @@ public class Graph<V, E> {
 
     public void setActive(boolean active) {
         this.active = active;
+       // init();
+       if(flagthread!=false){
+        if (!active) {
+            currentT.suspend();
+        }else if (currentT != null) {
+            currentT.resume();
+        }
+       }else{
+           flagthread=true;
+           init();
+       }
+        
     }
 
 //---------------------------------------------------
@@ -388,4 +404,7 @@ public class Graph<V, E> {
     private Point2D.Float p1;
     private static final double DT = 0.035;
     private double t = 0.0;
+
+    private Thread currentT = null;
+    private boolean flagthread=false;
 }

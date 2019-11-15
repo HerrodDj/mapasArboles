@@ -56,6 +56,8 @@ public class VentanaAplicacion extends javax.swing.JFrame {
         puntoDestinoTxt = new javax.swing.JTextField();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 16), new java.awt.Dimension(0, 16), new java.awt.Dimension(32767, 16));
         calcularBtn = new javax.swing.JButton();
+        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 16), new java.awt.Dimension(0, 16), new java.awt.Dimension(32767, 16));
+        play_chkbox = new javax.swing.JCheckBox();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
         jScrollPane1 = new javax.swing.JScrollPane();
         PanelMapa = new GraphPanel(modelo,g);
@@ -111,7 +113,17 @@ public class VentanaAplicacion extends javax.swing.JFrame {
         jPanel1.add(calcularBtn, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 8;
+        jPanel1.add(filler4, gridBagConstraints);
+
+        play_chkbox.setText("Play");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 8;
+        jPanel1.add(play_chkbox, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 16;
         gridBagConstraints.weighty = 0.1;
         jPanel1.add(filler3, gridBagConstraints);
 
@@ -201,8 +213,10 @@ public class VentanaAplicacion extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
+    private javax.swing.Box.Filler filler4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JCheckBox play_chkbox;
     private javax.swing.JLabel puntoDestinoLabel;
     private javax.swing.JTextField puntoDestinoTxt;
     private javax.swing.JLabel puntoPartidaLabel;

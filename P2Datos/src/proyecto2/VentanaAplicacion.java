@@ -5,7 +5,6 @@
  */
 package proyecto2;
 
-import graphs.GVertex;
 import graphs.Graph;
 import graphs.view.GraphPanel;
 import graphs.view.Modelo;
@@ -14,16 +13,11 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.geom.Ellipse2D;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import lists.List;
 
 /**
  *
@@ -33,6 +27,9 @@ public class VentanaAplicacion extends javax.swing.JFrame {
 
     /**
      * Creates new form NewJFrame
+     * @param titulo
+     * @param modelo
+     * @param g
      */
     public VentanaAplicacion(String titulo, Modelo modelo, Graph<Integer, Integer> g)
             throws HeadlessException {
@@ -40,10 +37,6 @@ public class VentanaAplicacion extends javax.swing.JFrame {
         this.modelo = modelo;
         this.g = g;
         configurar();
-//        initComponents();
-//        ajustarComponentes(getContentPane());
-//        GraphPanel f = (GraphPanel) PanelMapa;
-//        f.setPadre(this);
     }
 
     @SuppressWarnings("unchecked")
@@ -176,28 +169,8 @@ public class VentanaAplicacion extends javax.swing.JFrame {
                     cambiarActivo(play_chkbox.isSelected());
                 }
         );
-    }
-
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Configuracion UI ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            JFrame.setDefaultLookAndFeelDecorated(true);
-        } catch (ClassNotFoundException
-                | IllegalAccessException
-                | InstantiationException
-                | UnsupportedLookAndFeelException ex) {
-            System.err.printf("Excepción: '%s'%n", ex.getMessage());
-        }
-        //</editor-fold>        
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new VentanaAplicacion("Proyecto #2 (WAZE)", new Modelo(), new Graph<Integer, Integer>()).init();
+        this.calcularBtn.addActionListener((ActionEvent e) -> {
+            g.agregarMarcador(this.puntoPartidaTxt.getText(), this.puntoDestinoTxt.getText());
         });
     }
 

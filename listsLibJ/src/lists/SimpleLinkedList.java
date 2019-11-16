@@ -8,7 +8,7 @@ package lists;
  * @version 1.0.1
  * @since 2019-08-12
  */
-public class SimpleLinkedList<T> extends AbstractList<T>{
+public class SimpleLinkedList<T> extends AbstractList<T> {
 
     public SimpleLinkedList() {
         super();
@@ -91,7 +91,7 @@ public class SimpleLinkedList<T> extends AbstractList<T>{
             return cursor.getInfo();
         }
         throw new IndexOutOfBoundsException();
-    }    
+    }
 
     @Override
     public String toString() {
@@ -129,17 +129,37 @@ public class SimpleLinkedList<T> extends AbstractList<T>{
         throw new IndexOutOfBoundsException();
     }
     
-    public boolean search(T info){
-    if (count > 0) {
+    @Override
+    public T get1(T info) {
+        if (count > 0) {
             Link<T> cursor = first;
             int i = 0;
             while (i < count && !info.equals(cursor.getInfo())) {
                 cursor = cursor.getNext();
                 i++;
             }
-            return count == i;
+            if(cursor==null)
+                return null;
+            else
+                return cursor.getInfo();
         }
-    return false;
+        return null;
+    }
+    
+
+    @Override
+    public void remove(T info) {
+        Link<T> cursor = first;
+        if (info.equals(first.getInfo())) {
+            this.removeFirst();
+        } else {
+            int i = 0;
+            while (i < count && !info.equals(cursor.getNext().getInfo())) {
+                cursor = cursor.getNext();
+                i++;
+            }
+            cursor.setNext(cursor.getNext().getNext());
+        }
     }
 }
 
@@ -165,7 +185,6 @@ class Link<T> {
     public void setNext(Link<T> next) {
         this.next = next;
     }
-    
 
     private T info;
     private Link<T> next;

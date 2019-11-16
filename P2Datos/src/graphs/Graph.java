@@ -23,6 +23,7 @@ public class Graph<V, E> {
         vertices = new SimpleLinkedList<>();
         edges = new SimpleLinkedList<>();
         active = false;
+        m = new Marker[MAX_M];
     }
 
     public GVertex<V> getVertex(V v) {
@@ -80,6 +81,7 @@ public class Graph<V, E> {
         }
         edges.addLast(new Edge<>(tail, head, w));
         tail.agregarArco(new Edge(tail, head, w));
+        head.agregarArco(new Edge(head, tail, w));
         List<Edge> g = tail.getEdges();
         int p = g.count();
     }
@@ -100,11 +102,25 @@ public class Graph<V, E> {
         init(vertices.getFirst());
     }
 
+    public SimpleLinkedList<GVertex<V>> generaLista1(List<GVertex<V>> verticess, GVertex<V> origen) {
+        SimpleLinkedList<GVertex<V>> list = new SimpleLinkedList<>();
+        Iterator<GVertex<V>> jk = verticess.getIterator();
+        List<Edge> aux = origen.getEdges();
+        list.addLast(origen);
+        for (int i = 0; i < aux.count(); i++) {
+            list.addLast(aux.get(i).getHead());
+        }
+        for (int j = 0; j < verticess.count(); j++) {
+            if (list.get1(verticess.get(j)) == null) {
+                list.addLast(verticess.get(j));
+            }
+        }
+        return list;
+    }
+
     public void init(GVertex<V> pathStart) {
         Random r = new Random();
-        SimpleLinkedList<GGVertex<V>> myList = this.getAllLikeGGVertex(pathStart);
-        SimpleLinkedList<GVertex<V>> lt = this.verticesOptimos(vertices.getFirst(), vertices.getLast());
-        // setActive(false);
+        SimpleLinkedList<GVertex<V>> lt = this.verticesOptimos(vertices.get(3), vertices.get(2));
         currentT
                 = new Thread() {
             @Override
@@ -117,10 +133,8 @@ public class Graph<V, E> {
                         p0 = v0.getPosition();
                         GVertex<V> v1 = lt.get(k);
                         p1 = v1.getPosition();
-
                         System.out.printf("v(%s): %s%n", v0.getInfo(), p0);
                         System.out.printf("v(%s): %s%n", v1.getInfo(), p1);
-
                         t = 0.0;
                         if (!p1.equals(lt.getFirst().getPosition())) {
                             while (t <= 1.0) {
@@ -139,7 +153,32 @@ public class Graph<V, E> {
 
         };
         currentT.start();
-        
+
+    }
+
+    private void updateMarker(Marker m) {
+
+        if (m.isMoving()) {
+            m.move();
+        } else {
+
+            // Si el marcador no está en movimiento,
+            // es porque se encuentra sobre uno de los
+            // vértices. Se debe calcular entonces
+            // la posición del siguiente vértice.
+            synchronized (Graph.this) {
+                GVertex<V> v0 = m.getEndVertex();
+                //List<GVertex<V>> vs = getAdjacent(v0);
+
+                // Se define el criterio para seleccionar
+                // el siguiente vértice.
+                GVertex<V> v2 = m.getNodoOptimo();
+                m.setStartVertex(v0);
+                m.setEndVertex(v2);
+                m.recalculateVelocity();
+                m.start();
+            }
+        }
     }
 
     @Override
@@ -180,6 +219,14 @@ public class Graph<V, E> {
         );
         r.grow(S0 / 2, S0 / 2);
         return r;
+    }
+
+    public void agregarMarcador(String pathStart, String pathEnd) {
+        if (cantidad < m.length) {
+            GVertex<V> inicio = vertices.get(new GVertex<>((V) Integer.getInteger(pathStart)));
+            GVertex<V> fin = vertices.get(new GVertex<>((V) Integer.getInteger(pathEnd)));
+            m[cantidad++] = new Marker(inicio, fin, verticesOptimos(inicio, fin));
+        }
     }
 
     public void paint(Graphics bg, Rectangle bounds) {
@@ -252,6 +299,12 @@ public class Graph<V, E> {
                     (int) ((p0.y + t * (p1.y - p0.y)) - S1 / 2),
                     S1, S1);
         }
+
+        if (m != null && cantidad != 0) {
+            for (Marker e : m) {
+                e.paint(g);
+            }
+        }
     }
 
     public void update(Observable obs, Object evt) {
@@ -279,18 +332,18 @@ public class Graph<V, E> {
 
     public void setActive(boolean active) {
         this.active = active;
-       // init();
-       if(flagthread!=false){
-        if (!active) {
-            currentT.suspend();
-        }else if (currentT != null) {
-            currentT.resume();
+        // init();
+        if (flagthread != false) {
+            if (!active) {
+                currentT.suspend();
+            } else if (currentT != null) {
+                currentT.resume();
+            }
+        } else {
+            flagthread = true;
+            init();
         }
-       }else{
-           flagthread=true;
-           init();
-       }
-        
+
     }
 
 //---------------------------------------------------
@@ -316,58 +369,73 @@ public class Graph<V, E> {
         SimpleLinkedList<GVertex<V>> list = new SimpleLinkedList<>();
         SimpleLinkedList<GGVertex<V>> lista = getAllLikeGGVertex(inicio);
         GVertex<V> aux = new GVertex<>();
+        GGVertex<V> aux2 = null;
         int i;
         int k = 0;
         for (i = 0; i < lista.count(); i++) {
             if (lista.get(i).getInfo().getInfo() == fin.getInfo()) {
                 list.addFirst(lista.get(i).getInfo());
                 aux = lista.get(i).getOptimo();
+                for (int v = 0; v < lista.count(); v++) {
+                    if (aux.getInfo() == lista.get(v).getInfo().getInfo()) {
+                        aux2 = lista.get(v);
+                        break;
+                    }
+                }
                 k = i + 1;
                 break;
             }
         }
         while (aux != null) {
             list.addFirst(aux);
-            aux = lista.get(k).getOptimo(); //como demonios agarro el último
+            aux = aux2.getOptimo(); //como demonios agarro el último
             k++;
         }
         list.addFirst(inicio);
-
         return list;
     }
 
 //algoritmos juan para la ruta mas corta
     public SimpleLinkedList<GGVertex<V>> getAllLikeGGVertex(GVertex<V> origen) {
-
         SimpleLinkedList<GGVertex<V>> myGGvertexList = new SimpleLinkedList<>();
         int val = 0; //Peso desde el origen al vertices.get(c)
-        for (int c = 0; c < vertices.count(); c++) {
-            if ((val = origen.getVertexWeigth(vertices.get(c))) != -1) {
+        SimpleLinkedList<GVertex<V>> lk = this.generaLista1(vertices, origen);
+        for (int c = 0; c < lk.count(); c++) {
+            if ((val = origen.getVertexWeigth(lk.get(c))) != -1) {
                 if (val > 0) {
-                    myGGvertexList.addFirst(new GGVertex(origen, vertices.get(c), null, false, val));
+                    myGGvertexList.addFirst(new GGVertex(origen, lk.get(c), null, false, val));
                 } else {
                     GGVertex myggvert = null;
                     for (int i = 0; i < myGGvertexList.count(); i++) {
-                        if ((val = myGGvertexList.get(i).getVertexWeigth(vertices.get(c))) > 0) {
+//                        if(myGGvertexList.get(i).getOptimo()==null){
+//                            
+//                        }
+                        GVertex forcompare = lk.get(myGGvertexList.get(i).getInfo());
+                        if ((val = forcompare.getVertexWeigth(lk.get(c))) > 0) {
                             if (myggvert == null) {
-                                myggvert = new GGVertex(origen, vertices.get(c), myGGvertexList.get(i).getInfo(), false, val + myGGvertexList.get(i).getPeso());
+                                myggvert = new GGVertex(
+                                        origen, lk.get(c),
+                                        myGGvertexList.get(i).getInfo(),
+                                        false,
+                                        val + myGGvertexList.get(i).getPeso()
+                                );
                             } else {
-                                if (myggvert.getPeso() > myGGvertexList.get(i).getPeso() + myGGvertexList.get(i).getVertexWeigth(myggvert.getInfo())) { //falta la suma del peso desde el nodo i hasta a el objetivo(final)
-                                    myggvert.setOptimo(vertices.get(c));
+                                if (myggvert.getPeso() > myGGvertexList.get(i).getPeso()
+                                        + myGGvertexList.get(i).getVertexWeigth(myggvert.getInfo())) {
+                                    myggvert.setOptimo(lk.get(myGGvertexList.get(i).getInfo()));
                                     myggvert.setPeso(val + myggvert.getOptimo().getVertexWeigth(origen));
-
                                 }
                             }
                         }
                     }
                     myGGvertexList.addFirst(myggvert);
-
                     //actualizar la tabla si encuentra otro menor
                 }
+            } else {
+                myGGvertexList.addFirst(new GGVertex(origen, lk.get(c), null, false, val));
             }
         }
         return myGGvertexList;
-
     }
 
 //--------------------------------------
@@ -406,5 +474,9 @@ public class Graph<V, E> {
     private double t = 0.0;
 
     private Thread currentT = null;
-    private boolean flagthread=false;
+    private boolean flagthread = false;
+
+    private static final int MAX_M = 50;
+    private Marker[] m;
+    private int cantidad = 0;
 }

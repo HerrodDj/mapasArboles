@@ -29,10 +29,14 @@ public interface List<T> {
     T removeFirst();
 
     T removeLast();
+    
+    void remove(T info);
 
     T get(int position);
     
     T get(T info);
+    
+    T get1(T info);
    
 
     Iterator<T> getIterator();

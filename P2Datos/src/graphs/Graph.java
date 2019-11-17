@@ -99,7 +99,39 @@ public class Graph<V, E> {
     }
 
     public void init() {
-        init(vertices.getFirst());
+//        init(vertices.getFirst());
+    }
+
+    public void init(GVertex<V> pathStart) {
+        Random r = new Random();
+
+        // setActive(true);
+        currentT = new Thread(() -> {
+            run(pathStart);
+        });
+        currentT.start();
+    }
+
+    public void run(GVertex<V> pathStart) {
+        // Calcula la posición inicial del marcador..
+
+        // Al principio, el marcador se encuentra
+        // detenido en la posición del primer vértice.
+        while (currentT == Thread.currentThread()) {
+            if (isActive()) {
+                for (Marker e : m) {
+                    if (e != null) {
+                        updateMarker(e);
+                    }
+                }
+            } else {
+                // System.out.println("Modelo inactivo..");
+            }
+            try {
+                Thread.sleep(MAX_WAIT);
+            } catch (InterruptedException ex) {
+            }
+        }
     }
 
     public SimpleLinkedList<GVertex<V>> generaLista1(List<GVertex<V>> verticess, GVertex<V> origen) {
@@ -118,48 +150,44 @@ public class Graph<V, E> {
         return list;
     }
 
-    public void init(GVertex<V> pathStart) {
-        Random r = new Random();
-        //lt = this.verticesOptimos(vertices.get(3), vertices.get(2));
-        currentT
-                = new Thread() {
-            @Override
-            public void run() {
-                GVertex<V> v0 = pathStart;
-                while (isActive()) {
-                    List<GVertex<V>> vs = getAdjacent(v0);
-                    int k = 0;
-                    while (k != lt.count()) {
-                        p0 = v0.getPosition();
-                        GVertex<V> v1 = lt.get(k);
-                        p1 = v1.getPosition();
-                        System.out.printf("v(%s): %s%n", v0.getInfo(), p0);
-                        System.out.printf("v(%s): %s%n", v1.getInfo(), p1);
-                        t = 0.0;
-                        if (!p1.equals(lt.getFirst().getPosition())) {
-                            while (t <= 1.0) {
-                                t += DT;
-                                try {
-                                    Thread.sleep(MAX_WAIT);
-                                } catch (InterruptedException ex) {
-                                }
-                            }
-                        }
-                        v0 = v1;
-                        k++;
-                    }
-                }
-            }
-
-        };
-        currentT.start();
-
-    }
-
+//    public void init(GVertex<V> pathStart) {
+//        Random r = new Random();
+//        currentT
+//                = new Thread() {
+//            @Override
+//            public void run() {
+//                GVertex<V> v0 = pathStart;
+//                while (isActive()) {
+//                    List<GVertex<V>> vs = getAdjacent(v0);
+//                    int k = 0;
+//                    while (k != lt.count()) {
+//                        p0 = v0.getPosition();
+//                        GVertex<V> v1 = lt.get(k);
+//                        p1 = v1.getPosition();
+//                        System.out.printf("v(%s): %s%n", v0.getInfo(), p0);
+//                        System.out.printf("v(%s): %s%n", v1.getInfo(), p1);
+//                        t = 0.0;
+//                        if (!p1.equals(lt.getFirst().getPosition())) {
+//                            while (t <= 1.0) {
+//                                t += DT;
+//                                try {
+//                                    Thread.sleep(MAX_WAIT);
+//                                } catch (InterruptedException ex) {
+//                                }
+//                            }
+//                        }
+//                        v0 = v1;
+//                        k++;
+//                    }
+//                }
+//            }
+//        };
+//        currentT.start();
+//    }
     private void updateMarker(Marker m) {
 
         if (m.isMoving()) {
-            m.move();
+            m.move(lt);
         } else {
 
             // Si el marcador no está en movimiento,
@@ -167,16 +195,21 @@ public class Graph<V, E> {
             // vértices. Se debe calcular entonces
             // la posición del siguiente vértice.
             synchronized (Graph.this) {
-                GVertex<V> v0 = m.getEndVertex();
-                //List<GVertex<V>> vs = getAdjacent(v0);
+                GVertex<V> v0 = m.getStartVertex();
+                GVertex<V> v1 = m.getEndVertex();
+                SimpleLinkedList<GVertex<V>> vs = this.verticesOptimos(v0, v1);
 
                 // Se define el criterio para seleccionar
                 // el siguiente vértice.
-                GVertex<V> v2 = m.getNodoOptimo();
-                m.setStartVertex(v0);
-                m.setEndVertex(v2);
-                m.recalculateVelocity();
-                m.start();
+                int k=1;
+                while (k != vs.count()) {
+                    GVertex<V> v2 = vs.get(k);
+                    m.setStartVertex(v0);
+                    m.setEndVertex(v2);
+                    m.recalculateVelocity();
+                    m.start();
+                    k++;
+                }
             }
         }
     }
@@ -188,43 +221,50 @@ public class Graph<V, E> {
                 vertices, edges);
     }
 
-    public Rectangle getBounds() {
-        float x0, x1, y0, y1;
-        x0 = x1 = y0 = y1 = 0f;
-        boolean f = false;
-
-        Iterator<GVertex<V>> i = vertices.getIterator();
-        while (i.hasNext()) {
-            GVertex<V> v = i.getNext();
-
-            if (!f) {
-                x0 = x1 = v.getPosition().x;
-                y0 = y1 = v.getPosition().y;
-            }
-            f = true;
-
-            x0 = Math.min(x0, v.getPosition().x);
-            x1 = Math.max(x1, v.getPosition().x);
-            y0 = Math.min(y0, v.getPosition().y);
-            y1 = Math.max(y1, v.getPosition().y);
-        }
-
-        if (!f) {
-            throw new IllegalArgumentException();
-        }
-
-        Rectangle r = new Rectangle(
-                (int) (x0), (int) (y0),
-                (int) (x1 - x0), (int) (y1 - y0)
-        );
-        r.grow(S0 / 2, S0 / 2);
-        return r;
-    }
-
+//    public Rectangle getBounds() {
+//        float x0, x1, y0, y1;
+//        x0 = x1 = y0 = y1 = 0f;
+//        boolean f = false;
+//
+//        Iterator<GVertex<V>> i = vertices.getIterator();
+//        while (i.hasNext()) {
+//            GVertex<V> v = i.getNext();
+//
+//            if (!f) {
+//                x0 = x1 = v.getPosition().x;
+//                y0 = y1 = v.getPosition().y;
+//            }
+//            f = true;
+//
+//            x0 = Math.min(x0, v.getPosition().x);
+//            x1 = Math.max(x1, v.getPosition().x);
+//            y0 = Math.min(y0, v.getPosition().y);
+//            y1 = Math.max(y1, v.getPosition().y);
+//        }
+//
+//        if (!f) {
+//            throw new IllegalArgumentException();
+//        }
+//
+//        Rectangle r = new Rectangle(
+//                (int) (x0), (int) (y0),
+//                (int) (x1 - x0), (int) (y1 - y0)
+//        );
+//        r.grow(S0 / 2, S0 / 2);
+//        return r;
+//    }
     public void agregarMarcador(String pathStart, String pathEnd) {
         if (cantidad < m.length) {
             GVertex<V> inicio = vertices.get(new GVertex<>((V) Integer.getInteger(pathStart)));
             GVertex<V> fin = vertices.get(new GVertex<>((V) Integer.getInteger(pathEnd)));
+            m[cantidad++] = new Marker(inicio, fin, verticesOptimos(inicio, fin));
+        }
+    }
+
+    public void agregarMarcador(GVertex<V> I, GVertex<V> F) {
+        if (cantidad < m.length) {
+            GVertex<V> inicio = vertices.get(I);
+            GVertex<V> fin = vertices.get(F);
             m[cantidad++] = new Marker(inicio, fin, verticesOptimos(inicio, fin));
         }
     }
@@ -239,8 +279,8 @@ public class Graph<V, E> {
 
         g.setColor(Color.DARK_GRAY);
         g.setStroke(TRAZO_GUIA);
-        Rectangle b = getBounds();
-        g.drawRect(b.x, b.y, b.width, b.height);
+////        Rectangle b = getBounds();
+//        g.drawRect(b.x, b.y, b.width, b.height);
 
         g.setFont(TIPO_BASE);
         FontMetrics fm = g.getFontMetrics();
@@ -302,7 +342,9 @@ public class Graph<V, E> {
 
         if (m != null && cantidad != 0) {
             for (Marker e : m) {
-                e.paint(g);
+                if (e != null) {
+                    e.paint(g);
+                }
             }
         }
     }
@@ -388,14 +430,13 @@ public class Graph<V, E> {
         }
         while (aux != null) {
             list.addFirst(aux);
-            aux = aux2.getOptimo(); //como demonios agarro el último
+            aux = aux2.getOptimo();
             k++;
         }
         list.addFirst(inicio);
         return list;
     }
 
-//algoritmos juan para la ruta mas corta
     public SimpleLinkedList<GGVertex<V>> getAllLikeGGVertex(GVertex<V> origen) {
         SimpleLinkedList<GGVertex<V>> myGGvertexList = new SimpleLinkedList<>();
         int val = 0; //Peso desde el origen al vertices.get(c)
@@ -511,7 +552,7 @@ public class Graph<V, E> {
     private Thread currentT = null;
     private boolean flagthread = false;
 
-    private static final int MAX_M = 50;
+    private static final int MAX_M = 5;
     private Marker[] m;
     private int cantidad = 0;
     private SimpleLinkedList<GVertex<V>> lt = null;
@@ -528,6 +569,7 @@ public class Graph<V, E> {
             }
         }
         lt = this.verticesOptimos(inicio, fin);
+        this.agregarMarcador(inicio, fin);
         init(inicio);
     }
 }

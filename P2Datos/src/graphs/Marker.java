@@ -25,10 +25,10 @@ class Marker<V> {
         setMoving(true);
     }
 
-    public void move() {
-        if (moving = (t <= 1.0)) {
-            t += dt;
-        }
+    public void move(SimpleLinkedList<GVertex<V>> lt) {
+            if (moving = (t <= 1.0)) {
+                t += dt;
+            }
     }
 
     public void paint(Graphics2D g) {
@@ -84,8 +84,8 @@ class Marker<V> {
     public GVertex<V> getNodoOptimo() {
         return rutaOptima.get(recorridoActual++);
     }
-    
-    public int getRecorridoActual(){
+
+    public int getRecorridoActual() {
         return this.recorridoActual;
     }
 

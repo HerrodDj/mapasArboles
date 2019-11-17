@@ -8,11 +8,11 @@
 <GVertex numero="6" x="600" y="450"/>
 
 <Edge head="1" tail="3" info="4"/>
-<Edge head="1" tail="2" info="5"/>
+<Edge head="1" tail="2" info="15"/>
 <Edge head="2" tail="5" info="3"/>
 <Edge head="5" tail="3" info="7"/>
 <Edge head="2" tail="4" info="1"/>
 <Edge head="4" tail="5" info="1"/>
-<Edge head="5" tail="6" info="2"/>
+<Edge head="5" tail="6" info="1"/>
 <Edge head="6" tail="3" info="5"/>
 </Graph>

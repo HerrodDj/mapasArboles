@@ -15,9 +15,7 @@ import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.JFrame;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -27,6 +25,7 @@ public class VentanaAplicacion extends javax.swing.JFrame {
 
     /**
      * Creates new form NewJFrame
+     *
      * @param titulo
      * @param modelo
      * @param g
@@ -56,7 +55,7 @@ public class VentanaAplicacion extends javax.swing.JFrame {
         play_chkbox = new javax.swing.JCheckBox();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
         jScrollPane1 = new javax.swing.JScrollPane();
-        PanelMapa = new GraphPanel(modelo,g);
+        PanelMapa = new GraphPanel(modelo, g);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -128,12 +127,12 @@ public class VentanaAplicacion extends javax.swing.JFrame {
         javax.swing.GroupLayout PanelMapaLayout = new javax.swing.GroupLayout(PanelMapa);
         PanelMapa.setLayout(PanelMapaLayout);
         PanelMapaLayout.setHorizontalGroup(
-            PanelMapaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 740, Short.MAX_VALUE)
+                PanelMapaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 740, Short.MAX_VALUE)
         );
         PanelMapaLayout.setVerticalGroup(
-            PanelMapaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 572, Short.MAX_VALUE)
+                PanelMapaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 572, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(PanelMapa);
@@ -169,7 +168,26 @@ public class VentanaAplicacion extends javax.swing.JFrame {
                 }
         );
         this.calcularBtn.addActionListener((ActionEvent e) -> {
-            g.iniciar(this.puntoPartidaTxt.getText(), this.puntoDestinoTxt.getText());
+            String rutaInicio = this.puntoPartidaTxt.getText();
+            String rutaDestino = this.puntoDestinoTxt.getText();
+            if (rutaInicio.equals(rutaDestino)) {
+                JOptionPane.showMessageDialog(null,
+                        "Ruta inicio debe ser distinto al destino.",
+                        "InfoBox: " + "Campos iguales",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else if (rutaInicio.isEmpty() || rutaDestino.isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "Por favor coloque toda la informacion correspondiente a inicio y destino.",
+                        "InfoBox: " + "Campos vacios",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else if (!isNumeric(rutaInicio) || !isNumeric(rutaDestino)) {
+                JOptionPane.showMessageDialog(null,
+                        "Por favor coloque solo numeros en la informacion solicitada.",
+                        "InfoBox: " + "Formato Incorrecto",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                g.iniciar(this.puntoPartidaTxt.getText(), this.puntoDestinoTxt.getText());
+            }
             //g.agregarMarcador(this.puntoPartidaTxt.getText(), this.puntoDestinoTxt.getText());
         });
     }
@@ -189,6 +207,15 @@ public class VentanaAplicacion extends javax.swing.JFrame {
 
     public void setValorDestinoField(String valueOf) {
         this.puntoDestinoTxt.setText(valueOf);
+    }
+
+    public static boolean isNumeric(String strNum) {
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException | NullPointerException nfe) {
+            return false;
+        }
+        return true;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

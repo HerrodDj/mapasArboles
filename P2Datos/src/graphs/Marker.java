@@ -25,7 +25,7 @@ class Marker<V> {
         setMoving(true);
     }
 
-    public void move(SimpleLinkedList<GVertex<V>> lt) {
+    public void move() {
             if (moving = (t <= 1.0)) {
                 t += dt;
             }

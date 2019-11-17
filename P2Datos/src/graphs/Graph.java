@@ -120,7 +120,7 @@ public class Graph<V, E> {
 
     public void init(GVertex<V> pathStart) {
         Random r = new Random();
-        SimpleLinkedList<GVertex<V>> lt = this.verticesOptimos(vertices.get(3), vertices.get(2));
+        //lt = this.verticesOptimos(vertices.get(3), vertices.get(2));
         currentT
                 = new Thread() {
             @Override
@@ -407,9 +407,6 @@ public class Graph<V, E> {
                 } else {
                     GGVertex myggvert = null;
                     for (int i = 0; i < myGGvertexList.count(); i++) {
-//                        if(myGGvertexList.get(i).getOptimo()==null){
-//                            
-//                        }
                         GVertex forcompare = lk.get(myGGvertexList.get(i).getInfo());
                         if ((val = forcompare.getVertexWeigth(lk.get(c))) > 0) {
                             if (myggvert == null) {
@@ -435,7 +432,45 @@ public class Graph<V, E> {
                 myGGvertexList.addFirst(new GGVertex(origen, lk.get(c), null, false, val));
             }
         }
+        //------------------------------------------
+//        int k = 0;
+//        for (int c = 0; c < lk.count(); c++) {
+//            if ((val = origen.getVertexWeigth(lk.get(c))) != -1) {
+//                if (val == 0) {                
+//                    GGVertex myggvert = null;
+//                    for (int i = 0; i < myGGvertexList.count(); i++) {
+//                        GVertex forcompare = lk.get(myGGvertexList.get(i).getInfo());
+//                        if ((val = forcompare.getVertexWeigth(lk.get(c))) > 0) {
+//                            myggvert = myGGvertexList.get(i);
+//                            k = i;
+//                        } else {
+//                            if (myGGvertexList.get(k).getPeso() > myGGvertexList.get(i).getPeso()
+//                                    + myGGvertexList.get(i).getVertexWeigth(myGGvertexList.get(k).getInfo())) {
+//                                myGGvertexList.get(k).setOptimo(lk.get(myGGvertexList.get(i).getInfo()));
+//                                myGGvertexList.get(k).setPeso(val + myGGvertexList.get(k).getOptimo().getVertexWeigth(origen));
+//                            }
+//                        }
+//                    }
+//                }
+//                //actualizar la tabla si encuentra otro menor
+//            }
+//        }
+
         return myGGvertexList;
+    }
+
+    public SimpleLinkedList<GGVertex<V>> recalcularOptimos(
+            SimpleLinkedList<GGVertex<V>> myGGlist,
+            SimpleLinkedList<GVertex<V>> lk) {
+        SimpleLinkedList<GGVertex<V>> comodin = null;
+        for (int i = 0; i < myGGlist.count(); i++) {
+            GGVertex var = myGGlist.get(i);
+            // SimpleLinkedList<Edge> myEdges = var.getOptimo();
+            for (int j = 0; j < var.getInfo().getEdges().count(); j++) {
+                //var.getInfo().getEdges().
+            }
+        }
+        return comodin;
     }
 
 //--------------------------------------
@@ -479,4 +514,20 @@ public class Graph<V, E> {
     private static final int MAX_M = 50;
     private Marker[] m;
     private int cantidad = 0;
+    private SimpleLinkedList<GVertex<V>> lt = null;
+
+    public void iniciar(String text, String text0) {
+        GVertex<V> inicio = null;
+        GVertex<V> fin = null;
+        for (int i = 0; i < vertices.count(); i++) {
+            if (String.valueOf(vertices.get(i).getInfo()).equals(text)) {
+                inicio = vertices.get(i);
+            }
+            if (String.valueOf(vertices.get(i).getInfo()).equals(text0)) {
+                fin = vertices.get(i);
+            }
+        }
+        lt = this.verticesOptimos(inicio, fin);
+        init(inicio);
+    }
 }

@@ -156,7 +156,6 @@ public class VentanaAplicacion extends javax.swing.JFrame {
                 g.setActive(false);
                 System.exit(0);
             }
-
         });
     }
 
@@ -170,7 +169,8 @@ public class VentanaAplicacion extends javax.swing.JFrame {
                 }
         );
         this.calcularBtn.addActionListener((ActionEvent e) -> {
-            g.agregarMarcador(this.puntoPartidaTxt.getText(), this.puntoDestinoTxt.getText());
+            g.iniciar(this.puntoPartidaTxt.getText(), this.puntoDestinoTxt.getText());
+            //g.agregarMarcador(this.puntoPartidaTxt.getText(), this.puntoDestinoTxt.getText());
         });
     }
 
